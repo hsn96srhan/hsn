@@ -794,28 +794,31 @@ const DEFAULT_SITE_DATA = {
         {
             "id": 1,
             "priority": 3,
-            "title": "استراتيجية مضاعفة العائد على الإعلانات ROAS",
-            "youtube_video_id": "dQw4w9WgXcQ",
-            "views_count": "120K+",
-            "likes_count": "8.5K",
+            "title": "محتوى طبي (قطاع الرعاية الصحية والعيادات)",
+            "youtube_video_id": "short_medical",
+            "video_url": "assets/videos/short_medical.mp4",
+            "views_count": "130K",
+            "likes_count": "9.8K",
             "is_published": true
         },
         {
             "id": 2,
             "priority": 2,
-            "title": "كيف ترسم رحلة العميل وتزيل عقبات التحويل",
-            "youtube_video_id": "3JZ_D3ELwOQ",
-            "views_count": "85K+",
-            "likes_count": "5.2K",
+            "title": "كافيهات ومطاعم (استراتيجيات نمو الـ F&B)",
+            "youtube_video_id": "short_cafes",
+            "video_url": "assets/videos/short_cafes.mp4",
+            "views_count": "48K",
+            "likes_count": "4.2K",
             "is_published": true
         },
         {
             "id": 3,
             "priority": 1,
-            "title": "أهم 3 أخطاء في إعلانات سناب شات للعيادات",
-            "youtube_video_id": "L_LUpnjgPso",
-            "views_count": "45K+",
-            "likes_count": "3.1K",
+            "title": "صناعة المحتوى بالذكاء الاصطناعي (AI Creation)",
+            "youtube_video_id": "short_ai",
+            "video_url": "assets/videos/short_ai.mp4",
+            "views_count": "12K",
+            "likes_count": "1.5K",
             "is_published": true
         }
     ],
@@ -993,7 +996,7 @@ function setMasterData(key, data) {
 }
 
 function initMasterData() {
-    const DATA_VERSION = "2026.10.03.v102_LANDING_PAGES_BUILDER";
+    const DATA_VERSION = "2026.10.15.v103_REAL_HERO_AND_SHORTS";
     if (localStorage.getItem("HSN_DATA_VERSION") !== DATA_VERSION) {
         Object.keys(DEFAULT_SITE_DATA).forEach(key => {
             localStorage.setItem("HSN_MASTER_DATA_" + key, JSON.stringify(DEFAULT_SITE_DATA[key]));

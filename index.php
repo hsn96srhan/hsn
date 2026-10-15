@@ -13,29 +13,15 @@ try {
 } catch (Exception $e) {}
 ?>
 
-<!-- Homepage Executive YouTube Video Hero Banner -->
+<!-- Homepage Executive Local Video Hero Banner -->
 <section class="video-hero-banner">
     <div class="container">
         <div class="video-hero-card" id="video_hero_card">
-            <div class="youtube-hero-wrapper">
-                <?php 
-                $heroVidUrl = $siteSettings['hero_video_url'] ?? 'https://www.youtube.com/embed/dQw4w9WgXcQ';
-                if (strpos($heroVidUrl, 'youtube') !== false && strpos($heroVidUrl, 'embed') === false) {
-                    preg_match('/[\\?&]v=([^&#] *)/', $heroVidUrl, $matches);
-                    $vidId = $matches[1] ?? 'dQw4w9WgXcQ';
-                    $heroVidUrl = "https://www.youtube.com/embed/" . $vidId;
-                }
-                ?>
-                <iframe id="youtube_hero_player" 
-                        src="<?php echo htmlspecialchars($heroVidUrl); ?>?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3" 
-                        title="Executive Hero Widescreen Demo Video" 
-                        frameborder="0" 
-                        allow="autoplay; encrypted-media" 
-                        allowfullscreen>
-                </iframe>
-            </div>
+            <video id="hero_video_player" autoplay muted loop playsinline preload="auto" style="width:100%; height:100%; object-fit:cover; display:block;">
+                <source src="assets/videos/hero_video.mp4" type="video/mp4">
+            </video>
             <div class="video-click-overlay" id="video_click_overlay"></div>
-            <button id="video_play_btn" type="button" class="video-play-icon-btn" aria-label="تشغيل الفيديو">
+            <button id="video_play_btn" type="button" class="video-play-icon-btn" aria-label="تشغيل الصوت">
                 <span class="play-triangle-icon">▶</span>
             </button>
         </div>
@@ -50,38 +36,75 @@ try {
     </div>
 </div>
 
-<!-- Latest Shorts Videos Section (Dynamic DB Driven) -->
+<!-- Latest Shorts Videos Section -->
 <section class="shorts-section">
     <div class="container">
-        <div class="shorts-grid">
-            <?php if (!empty($shortsList)): ?>
-                <?php foreach ($shortsList as $idx => $sh): ?>
-                    <div class="short-card" data-youtube-id="<?php echo htmlspecialchars($sh['youtube_video_id']); ?>">
-                        <img src="https://img.youtube.com/vi/<?php echo htmlspecialchars($sh['youtube_video_id']); ?>/hqdefault.jpg" alt="<?php echo htmlspecialchars($sh['title']); ?>" class="short-card-poster">
-                        <div class="short-card-overlay"></div>
-                        <div class="short-card-header">
-                            <span class="short-badge">⚡ SHORTS</span>
-                            <span class="short-duration">0:50</span>
-                        </div>
-                        <div class="short-play-btn">
-                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        </div>
-                        <div class="short-card-footer">
-                            <h3 class="short-card-title"><?php echo htmlspecialchars($sh['title']); ?></h3>
-                            <div class="short-card-views">
-                                <span>👁️ <?php echo htmlspecialchars($sh['views_count'] ?? '10K+'); ?></span>
-                                <span data-en="views">• مشاهدة</span>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="short-card">
-                    <div class="short-card-footer">
-                        <h3 class="short-card-title">فيديوهات Shorts قريباً</h3>
+        <div class="shorts-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 1050px; margin: 0 auto;">
+            <!-- Short 1: Medical Content (130K views) -->
+            <div class="short-card" data-video="assets/videos/short_medical.mp4">
+                <video class="short-card-poster" preload="metadata" muted playsinline style="width:100%; height:100%; object-fit:cover;">
+                    <source src="assets/videos/short_medical.mp4#t=0.5" type="video/mp4">
+                </video>
+                <div class="short-card-overlay"></div>
+                <div class="short-card-header">
+                    <span class="short-badge">⚡ SHORTS</span>
+                    <span class="short-duration">0:45</span>
+                </div>
+                <div class="short-play-btn">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <div class="short-card-footer">
+                    <h3 class="short-card-title" data-en="Medical & Healthcare Marketing 🩺">محتوى طبي (قطاع الرعاية الصحية والعيادات) 🩺</h3>
+                    <div class="short-card-views">
+                        <span>👁️ 130K</span>
+                        <span data-en="views">• مشاهدة</span>
                     </div>
                 </div>
-            <?php endif; ?>
+            </div>
+
+            <!-- Short 2: Cafes & Restaurants (48K views) -->
+            <div class="short-card" data-video="assets/videos/short_cafes.mp4">
+                <video class="short-card-poster" preload="metadata" muted playsinline style="width:100%; height:100%; object-fit:cover;">
+                    <source src="assets/videos/short_cafes.mp4#t=0.5" type="video/mp4">
+                </video>
+                <div class="short-card-overlay"></div>
+                <div class="short-card-header">
+                    <span class="short-badge">⚡ SHORTS</span>
+                    <span class="short-duration">0:52</span>
+                </div>
+                <div class="short-play-btn">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <div class="short-card-footer">
+                    <h3 class="short-card-title" data-en="Cafes & Restaurants (F&B Growth) ☕🍽️">كافيهات ومطاعم (استراتيجيات نمو الـ F&B) ☕🍽️</h3>
+                    <div class="short-card-views">
+                        <span>👁️ 48K</span>
+                        <span data-en="views">• مشاهدة</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Short 3: AI Creation (12K views) -->
+            <div class="short-card" data-video="assets/videos/short_ai.mp4">
+                <video class="short-card-poster" preload="metadata" muted playsinline style="width:100%; height:100%; object-fit:cover;">
+                    <source src="assets/videos/short_ai.mp4#t=0.5" type="video/mp4">
+                </video>
+                <div class="short-card-overlay"></div>
+                <div class="short-card-header">
+                    <span class="short-badge">⚡ SHORTS</span>
+                    <span class="short-duration">0:38</span>
+                </div>
+                <div class="short-play-btn">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <div class="short-card-footer">
+                    <h3 class="short-card-title" data-en="AI Content Creation & Automation 🤖✨">صناعة المحتوى بالذكاء الاصطناعي (AI Creation) 🤖✨</h3>
+                    <div class="short-card-views">
+                        <span>👁️ 12K</span>
+                        <span data-en="views">• مشاهدة</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
