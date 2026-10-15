@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الكورسات والماستر كلاس | لوحة تحكم حسن سرحان</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --admin-bg: #070D1E;
+            --admin-card-bg: rgba(15, 23, 42, 0.75);
+            --admin-border: rgba(255, 255, 255, 0.12);
+            --admin-primary: #D4AF37;
+            --admin-text: #F8FAFC;
+            --admin-text-muted: #94A3B8;
+            --admin-danger: #EF4444;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--admin-bg); color: var(--admin-text); min-height: 100vh; display: flex; flex-direction: column; }
+        .admin-topbar { height: 70px; background: rgba(11, 19, 43, 0.9); border-bottom: 1px solid var(--admin-border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; }
+        .admin-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #FFF; }
+        .admin-brand-icon { width: 42px; height: 42px; background: linear-gradient(135deg, #D4AF37, #B48811); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #0B132B; }
+        .admin-wrapper { display: flex; flex: 1; }
+        .admin-sidebar { width: 260px; background: rgba(11, 19, 43, 0.6); border-left: 1px solid var(--admin-border); padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 6px; }
+        .sidebar-link { display: flex; align-items: center; gap: 12px; padding: 10px 16px; color: var(--admin-text-muted); text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 0.92rem; }
+        .sidebar-link.active { color: #0B132B; background: linear-gradient(135deg, #D4AF37, #E5C158); font-weight: 800; }
+        .admin-content { flex: 1; padding: 2rem; max-width: 1300px; }
+        .glass-card { background: var(--admin-card-bg); border: 1px solid var(--admin-border); border-radius: 16px; padding: 1.8rem; margin-bottom: 1.8rem; }
+        .card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem; }
+        .card-title { font-size: 1.25rem; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 10px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.2rem; }
+        .form-label { font-size: 0.88rem; font-weight: 700; color: var(--admin-text-muted); }
+        .form-input, .form-textarea { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--admin-border); color: #FFF; padding: 10px 14px; border-radius: 10px; font-size: 0.92rem; outline: none; }
+        .btn-action { background: linear-gradient(135deg, #D4AF37, #B48811); color: #0B132B; border: none; padding: 10px 22px; border-radius: 10px; font-weight: 800; font-size: 0.92rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-secondary-action { background: rgba(255, 255, 255, 0.1); color: #FFF; border: 1px solid var(--admin-border); padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; }
+        .btn-danger-action { background: rgba(239, 68, 68, 0.2); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+        .admin-table { width: 100%; border-collapse: collapse; text-align: right; font-size: 0.9rem; }
+        .admin-table th { background: rgba(255, 255, 255, 0.05); color: var(--admin-primary); padding: 12px 14px; font-weight: 800; border-bottom: 1px solid var(--admin-border); }
+        .admin-table td { padding: 12px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: var(--admin-text); vertical-align: middle; }
+    </style>
+</head>
+<body>
+
+    <header class="admin-topbar">
+        <a href="index.html" class="admin-brand">
+            <div class="admin-brand-icon">H</div>
+            <div>
+                <div style="font-weight:800;">لوحة التحكم القيادية</div>
+                <div style="font-size:0.75rem; color:var(--admin-primary);">حسن سرحان | HSSN-SRHAN</div>
+            </div>
+        </a>
+        <div style="display:flex; gap:12px; align-items:center;">
+            <a href="../courses.html" target="_blank" class="btn-secondary-action">🌐 المعاينة الحية للكورسات</a>
+            <a href="login.html" class="btn-danger-action">خروج 🚪</a>
+        </div>
+    </header>
+
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <a href="index.html" class="sidebar-link"><i class="fas fa-tachometer-alt"></i> لوحة الأداء العام</a>
+            <a href="home.html" class="sidebar-link"><i class="fas fa-home"></i> الرئيسية والشورتس</a>
+            <a href="qualifications.html" class="sidebar-link"><i class="fas fa-award"></i> المؤهلات (18 شهادة)</a>
+            <a href="career.html" class="sidebar-link"><i class="fas fa-briefcase"></i> السيرة المهنية</a>
+            <a href="portfolio.html" class="sidebar-link"><i class="fas fa-folder-open"></i> معرض الأعمال (13 حالة)</a>
+            <a href="services.html" class="sidebar-link"><i class="fas fa-concierge-bell"></i> الخدمات والحلول</a>
+            <a href="courses.html" class="sidebar-link active"><i class="fas fa-graduation-cap"></i> الكورسات والماستر كلاس</a>
+            <a href="digital-products.html" class="sidebar-link"><i class="fas fa-credit-card"></i> المنتجات وإيصالات D360</a>
+            <a href="blog.html" class="sidebar-link"><i class="fas fa-blog"></i> المقالات والـ SEO</a>
+            <a href="contact-settings.html" class="sidebar-link"><i class="fas fa-headset"></i> التواصل والحجوزات</a>
+            <a href="landing-pages.html" class="sidebar-link"><i class="fas fa-layer-group"></i> لاندنج بيدج بيلدر</a>
+            <a href="users.html" class="sidebar-link"><i class="fas fa-users-cog"></i> المساعدون والصلاحيات</a>
+        </aside>
+
+        <main class="admin-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.8rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 900; color: #FFF; margin-bottom: 4px;">إدارة البرامج والماستر كلاس (2 كورس)</h1>
+                    <p style="color: var(--admin-text-muted); font-size: 0.92rem;">التحكم الكامل في تفاصيل ورش العمل، المواعيد، الأسعار، والمميزات.</p>
+                </div>
+                <button onclick="resetCourseForm()" class="btn-action">➕ إضافة ماستر كلاس جديد</button>
+            </div>
+
+            <!-- Form Card -->
+            <div class="glass-card" id="course_form_card">
+                <div class="card-header-flex">
+                    <h2 class="card-title" id="form_title"><i class="fas fa-graduation-cap"></i> إضافة كورس / برنامج قيادي جديد</h2>
+                </div>
+
+                <form id="course_form" onsubmit="handleCourseSubmit(event)">
+                    <input type="hidden" id="course_id" value="0">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">عنوان الكورس (عربي) *</label>
+                            <input type="text" id="title_ar" class="form-input" required placeholder="ماستر كلاس قيادة التسويق الرقمي">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">عنوان الكورس (إنجليزي)</label>
+                            <input type="text" id="title_en" class="form-input" placeholder="Digital Marketing Leadership Masterclass">
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">الشارة Badge (عربي)</label>
+                            <input type="text" id="badge_ar" class="form-input" placeholder="🏆 برنامج قيادي">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">المدة الزمنية (عربي)</label>
+                            <input type="text" id="duration_ar" class="form-input" placeholder="4 أسابيع (16 ساعة)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">السعر الحالي بعد الخصم (عربي) *</label>
+                            <input type="text" id="price_ar" class="form-input" required placeholder="1,499 ﷼">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">السعر الأصلي قبل الخصم (عربي)</label>
+                            <input type="text" id="original_price_ar" class="form-input" placeholder="2,999 ﷼">
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">وصف البرنامج (عربي)</label>
+                            <textarea id="description_ar" class="form-textarea" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">وصف البرنامج (إنجليزي)</label>
+                            <textarea id="description_en" class="form-textarea" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">رابط الغلاف Image URL</label>
+                            <input type="text" id="image_url" class="form-input" value="assets/images/image40.png">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">ترتيب الظهور (sort_order)</label>
+                            <input type="number" id="sort_order" class="form-input" value="1">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-action" id="submit_btn">💾 حفظ البرنامج بالشبكة</button>
+                </form>
+            </div>
+
+            <!-- Table Card -->
+            <div class="glass-card">
+                <div class="card-header-flex">
+                    <h2 class="card-title"><i class="fas fa-list-ul"></i> قائمة البرامج والورش الحالية</h2>
+                </div>
+
+                <div style="width:100%; overflow-x:auto;">
+                    <table class="admin-table" id="courses_table">
+                        <thead>
+                            <tr>
+                                <th># / الترتيب</th>
+                                <th>عنوان البرنامج</th>
+                                <th>المدة</th>
+                                <th>السعر</th>
+                                <th>الحالة</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/site-data.js"></script>
+    <script src="assets/js/admin-engine.js"></script>
+    <script>
+        function editCourseItem(id) {
+            const crs = getMasterData('courses') || [];
+            const item = crs.find(c => c.id === id);
+            if (item) {
+                document.getElementById('course_id').value = item.id;
+                document.getElementById('title_ar').value = item.title_ar || '';
+                document.getElementById('title_en').value = item.title_en || '';
+                document.getElementById('badge_ar').value = item.badge_ar || '';
+                document.getElementById('duration_ar').value = item.duration_ar || '';
+                document.getElementById('price_ar').value = item.price_ar || '';
+                document.getElementById('original_price_ar').value = item.original_price_ar || '';
+                document.getElementById('description_ar').value = item.description_ar || '';
+                document.getElementById('description_en').value = item.description_en || '';
+                document.getElementById('image_url').value = item.image_url || '';
+                document.getElementById('sort_order').value = item.sort_order || item.id;
+                document.getElementById('form_title').innerHTML = '<i class="fas fa-edit"></i> تعديل البرنامج #' + item.id;
+                document.getElementById('submit_btn').textContent = '💾 حفظ تعديلات البرنامج';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function deleteCourseItem(id) {
+            if (confirm('هل أنت متأكد من حذف هذا الكورس؟')) {
+                let crs = getMasterData('courses') || [];
+                crs = crs.filter(c => c.id !== id);
+                setMasterData('courses', crs);
+                renderCoursesControl();
+                alert('تم حذف الكورس بنجاح.');
+            }
+        }
+
+        function resetCourseForm() {
+            document.getElementById('course_id').value = 0;
+            document.getElementById('course_form').reset();
+            document.getElementById('form_title').innerHTML = '<i class="fas fa-graduation-cap"></i> إضافة كورس / برنامج قيادي جديد';
+            document.getElementById('submit_btn').textContent = '💾 حفظ البرنامج بالشبكة';
+        }
+
+        function handleCourseSubmit(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('course_id').value);
+            let crs = getMasterData('courses') || [];
+
+            const newItem = {
+                id: id || Date.now(),
+                title_ar: document.getElementById('title_ar').value,
+                title_en: document.getElementById('title_en').value,
+                badge_ar: document.getElementById('badge_ar').value,
+                duration_ar: document.getElementById('duration_ar').value,
+                price_ar: document.getElementById('price_ar').value,
+                original_price_ar: document.getElementById('original_price_ar').value,
+                description_ar: document.getElementById('description_ar').value,
+                description_en: document.getElementById('description_en').value,
+                image_url: document.getElementById('image_url').value,
+                sort_order: parseInt(document.getElementById('sort_order').value) || 1,
+                is_published: true
+            };
+
+            if (id > 0) {
+                const idx = crs.findIndex(c => c.id === id);
+                if (idx !== -1) crs[idx] = newItem;
+            } else {
+                crs.push(newItem);
+            }
+
+            setMasterData('courses', crs);
+            renderCoursesControl();
+            resetCourseForm();
+            alert('تم حفظ الكورس بنجاح بالشبكة.');
+        }
+    </script>
+</body>
+</html>

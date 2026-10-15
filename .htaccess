@@ -1,0 +1,8 @@
+# Force DirectoryIndex to prefer index.php over index.html
+DirectoryIndex index.php index.html
+
+# Security: Prevent directory listing
+Options -Indexes
+
+# Serve UTF-8 by default
+AddDefaultCharset UTF-8

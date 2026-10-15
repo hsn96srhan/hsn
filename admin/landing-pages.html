@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منشئ الصفحات المستقلة Landing Pages | لوحة تحكم حسن سرحان</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --admin-bg: #070D1E;
+            --admin-card-bg: rgba(15, 23, 42, 0.75);
+            --admin-border: rgba(255, 255, 255, 0.12);
+            --admin-primary: #D4AF37;
+            --admin-text: #F8FAFC;
+            --admin-text-muted: #94A3B8;
+            --admin-danger: #EF4444;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--admin-bg); color: var(--admin-text); min-height: 100vh; display: flex; flex-direction: column; }
+        .admin-topbar { height: 70px; background: rgba(11, 19, 43, 0.9); border-bottom: 1px solid var(--admin-border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; }
+        .admin-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #FFF; }
+        .admin-brand-icon { width: 42px; height: 42px; background: linear-gradient(135deg, #D4AF37, #B48811); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #0B132B; }
+        .admin-wrapper { display: flex; flex: 1; }
+        .admin-sidebar { width: 260px; background: rgba(11, 19, 43, 0.6); border-left: 1px solid var(--admin-border); padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 6px; }
+        .sidebar-link { display: flex; align-items: center; gap: 12px; padding: 10px 16px; color: var(--admin-text-muted); text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 0.92rem; }
+        .sidebar-link.active { color: #0B132B; background: linear-gradient(135deg, #D4AF37, #E5C158); font-weight: 800; }
+        .admin-content { flex: 1; padding: 2rem; max-width: 1300px; }
+        .glass-card { background: var(--admin-card-bg); border: 1px solid var(--admin-border); border-radius: 16px; padding: 1.8rem; margin-bottom: 1.8rem; }
+        .card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem; }
+        .card-title { font-size: 1.25rem; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 10px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.2rem; }
+        .form-label { font-size: 0.88rem; font-weight: 700; color: var(--admin-text-muted); }
+        .form-input, .form-textarea { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--admin-border); color: #FFF; padding: 10px 14px; border-radius: 10px; font-size: 0.92rem; outline: none; }
+        .btn-action { background: linear-gradient(135deg, #D4AF37, #B48811); color: #0B132B; border: none; padding: 10px 22px; border-radius: 10px; font-weight: 800; font-size: 0.92rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .btn-secondary-action { background: rgba(255, 255, 255, 0.1); color: #FFF; border: 1px solid var(--admin-border); padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; }
+        .btn-danger-action { background: rgba(239, 68, 68, 0.2); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+        .admin-table { width: 100%; border-collapse: collapse; text-align: right; font-size: 0.9rem; }
+        .admin-table th { background: rgba(255, 255, 255, 0.05); color: var(--admin-primary); padding: 12px 14px; font-weight: 800; border-bottom: 1px solid var(--admin-border); }
+        .admin-table td { padding: 12px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: var(--admin-text); vertical-align: middle; }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .template-card {
+            background: rgba(11, 19, 43, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .template-card:hover {
+            border-color: #D4AF37;
+            transform: translateY(-2px);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .template-badge {
+            font-size: 0.72rem;
+            background: rgba(212, 175, 55, 0.2);
+            color: #D4AF37;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        /* Visual Block Editor Cards */
+        .section-editor-card {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+
+        .section-editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .section-title-tag {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #D4AF37;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sub-item-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 10px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="admin-topbar">
+        <a href="index.html" class="admin-brand">
+            <div class="admin-brand-icon">H</div>
+            <div>
+                <div style="font-weight:800;">لوحة التحكم القيادية</div>
+                <div style="font-size:0.75rem; color:var(--admin-primary);">حسن سرحان | HSSN-SRHAN</div>
+            </div>
+        </a>
+        <div style="display:flex; gap:12px; align-items:center;">
+            <a href="../index.html" target="_blank" class="btn-secondary-action">🌐 المعاينة الحية للموقع</a>
+            <a href="login.html" class="btn-danger-action">خروج 🚪</a>
+        </div>
+    </header>
+
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <a href="index.html" class="sidebar-link"><i class="fas fa-tachometer-alt"></i> لوحة الأداء العام</a>
+            <a href="home.html" class="sidebar-link"><i class="fas fa-home"></i> الرئيسية والشورتس</a>
+            <a href="qualifications.html" class="sidebar-link"><i class="fas fa-award"></i> المؤهلات (18 شهادة)</a>
+            <a href="career.html" class="sidebar-link"><i class="fas fa-briefcase"></i> السيرة المهنية</a>
+            <a href="portfolio.html" class="sidebar-link"><i class="fas fa-folder-open"></i> معرض الأعمال (13 حالة)</a>
+            <a href="services.html" class="sidebar-link"><i class="fas fa-concierge-bell"></i> الخدمات والحلول</a>
+            <a href="courses.html" class="sidebar-link"><i class="fas fa-graduation-cap"></i> الكورسات والماستر كلاس</a>
+            <a href="digital-products.html" class="sidebar-link"><i class="fas fa-credit-card"></i> المنتجات وإيصالات D360</a>
+            <a href="blog.html" class="sidebar-link"><i class="fas fa-blog"></i> المقالات والـ SEO</a>
+            <a href="contact-settings.html" class="sidebar-link"><i class="fas fa-headset"></i> التواصل والحجوزات</a>
+            <a href="landing-pages.html" class="sidebar-link active"><i class="fas fa-layer-group"></i> لاندنج بيدج بيلدر</a>
+            <a href="users.html" class="sidebar-link"><i class="fas fa-users-cog"></i> المساعدون والصلاحيات</a>
+        </aside>
+
+        <main class="admin-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.8rem; flex-wrap:wrap; gap:12px;">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 900; color: #FFF; margin-bottom: 4px;">منشئ صفحات الهبوط البصري (Visual Builder)</h1>
+                    <p style="color: var(--admin-text-muted); font-size: 0.92rem;">إدخال وتخصيص كافة النصوص والصور والعروض في حقول مباشرة لمنتجاتك وخدماتك بدون الحاجة لكتابة كود.</p>
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <button onclick="load10SectionsTemplateIntoVisualBuilder()" class="btn-action" style="background: linear-gradient(135deg, #10B981, #059669); color:#FFF;">⚡ تعبئة نموذج 10 سكاشن جاهز</button>
+                    <button onclick="resetLpForm()" class="btn-action">➕ صفحة جديدة فارغة</button>
+                </div>
+            </div>
+
+            <!-- 10 Section Templates Add Bar -->
+            <div class="glass-card">
+                <div class="card-header-flex">
+                    <h2 class="card-title"><i class="fas fa-plus-circle"></i> إضافة سكشن جديد لبنية الصفحة (انقر للإضافة):</h2>
+                </div>
+
+                <div class="template-grid">
+                    <div class="template-card" onclick="addNewSectionToBuilder('hero')">
+                        <span class="template-badge">+ إضافة</span>
+                        <div style="font-size:1.3rem; margin:2px 0;">🚀</div>
+                        <div style="font-weight:800; color:#FFF; font-size:0.85rem;">1. الهيدر والقيمة الجوهرية</div>
+                    </div>
+                    <div class="template-card" onclick="addNewSectionToBuilder('problems')">
+                        <span class="template-badge">+ إضافة</span>
+                        <div style="font-size:1.3rem; margin:2px 0;">⚠️</div>
+                        <div style="font-weight:800; color:#FFF; font-size:0.85rem;">2. المشاكل والتحديات</div>
+                    </div>
+                    <div class="template-card" onclick="addNewSectionToBuilder('solution')">
+                        <span class="template-badge">+ إضافة</span>
+                        <div style="font-size:1.3rem; margin:2px 0;">🎯</div>
+                        <div style="font-weight:800; color:#FFF; font-size:0.85rem;">3. الحل الاستراتيجي</div>
+                    </div>
+                    <div class="template-card" onclick="addNewSectionToBuilder('features')">
+                        <span class="template-badge">+ إضافة</span>
+                        <div style="font-size:1.3rem; margin:2px 0;">⚡</div>
+                        <div style="font-weight:800; color:#FFF; font-size:0.85rem;">4. المزايا التنافسية الـ 4</div>
+                    </div>
+                    <div class="template-card" onclick="addNewSectionToBuilder('process')">
+                        <span class="template-badge">+ إضافة</span>
+                        <div style="font-size:1.3rem; margin:2px 0;">🛤️</div>
+                        <div style="font-weight:800; color:#FFF; font-size:0.85rem;">5. خريطة الطريق 4 خطوات</div>
+                    </div>
+                    <div class="template-card" onclick="addNewSectionToBuilder('case_studies')">
+                        <span class="template-badge">+ إضافة</span>
+                        <div style="font-size:1.3rem; margin:2px 0;">📊</div>
+                        <div style="font-weight:800; color:#FFF; font-size:0.85rem;">6. الأرقام والإنجازات</div>
+                    </div>
+                    <div class="template-card" onclick="addNewSectionToBuilder('testimonials')">
+                        <span class="template-badge">+ إضافة</span>
+                        <div style="font-size:1.3rem; margin:2px 0;">⭐</div>
+                        <div style="font-weight:800; color:#FFF; font-size:0.85rem;">7. آراء العملاء والشهادات</div>
+                    </div>
+                    <div class="template-card" onclick="addNewSectionToBuilder('guarantee')">
+                        <span class="template-badge">+ إضافة</span>
+                        <div style="font-size:1.3rem; margin:2px 0;">🛡️</div>
+                        <div style="font-weight:800; color:#FFF; font-size:0.85rem;">8. الضمان الذهبي 100%</div>
+                    </div>
+                    <div class="template-card" onclick="addNewSectionToBuilder('pricing')">
+                        <span class="template-badge">+ إضافة</span>
+                        <div style="font-size:1.3rem; margin:2px 0;">💳</div>
+                        <div style="font-weight:800; color:#FFF; font-size:0.85rem;">9. عرض الباقة والتسعير</div>
+                    </div>
+                    <div class="template-card" onclick="addNewSectionToBuilder('faq_cta')">
+                        <span class="template-badge">+ إضافة</span>
+                        <div style="font-size:1.3rem; margin:2px 0;">❓</div>
+                        <div style="font-weight:800; color:#FFF; font-size:0.85rem;">10. الأسئلة والتحويل الفوري</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Card -->
+            <div class="glass-card" id="lp_form_card">
+                <div class="card-header-flex">
+                    <h2 class="card-title" id="form_title"><i class="fas fa-edit"></i> بيانات صفحة الهبوط والحقول المخصصة</h2>
+                </div>
+
+                <form id="lp_form" onsubmit="handleLpSubmit(event)">
+                    <input type="hidden" id="lp_id" value="0">
+                    <input type="hidden" id="blocks_json" value="[]">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">عنوان الصفحة (عربي) *</label>
+                            <input type="text" id="title_ar" class="form-input" required placeholder="مثال: لاندنج بيدج متجر العطور أو الاستشارات">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">عنوان الصفحة (إنجليزي)</label>
+                            <input type="text" id="title_en" class="form-input" placeholder="Example: E-Commerce Product Launch">
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">الرابط المباشر Slug * (بدون مسافات)</label>
+                            <input type="text" id="slug" class="form-input" required placeholder="perfume-offer-saudi">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">وصف الـ SEO والـ Meta Description</label>
+                            <input type="text" id="meta_description_ar" class="form-input" placeholder="صفحة هبوط مخصصة لحملات السناب شات وميتا...">
+                        </div>
+                    </div>
+
+                    <!-- Visual Section Builder Container -->
+                    <div style="margin: 2rem 0;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+                            <h3 style="font-size:1.2rem; font-weight:800; color:#FFF;"><i class="fas fa-layer-group"></i> محرر حقول السكاشن البصري (Visual Builder)</h3>
+                            <span style="font-size:0.85rem; color:#D4AF37; font-weight:700;" id="sections_count_badge">0 سكاشن مضمنة</span>
+                        </div>
+
+                        <div id="visual_sections_container">
+                            <!-- Populated dynamically with labeled fields for each section -->
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-action" id="submit_btn" style="font-size:1.05rem; padding:12px 30px;">💾 حفظ ونشر صفحة الهبوط اونلاين</button>
+                </form>
+            </div>
+
+            <!-- Table Card -->
+            <div class="glass-card">
+                <div class="card-header-flex">
+                    <h2 class="card-title"><i class="fas fa-list"></i> صفحات الهبوط المنشأة حالياً</h2>
+                </div>
+                <div style="width:100%; overflow-x:auto;">
+                    <table class="admin-table" id="lp_table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>عنوان الصفحة</th>
+                                <th>الرابط Slug</th>
+                                <th>عدد السكاشن</th>
+                                <th>معاينة الصفحة</th>
+                                <th>الحالة</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/site-data.js"></script>
+    <script src="assets/js/admin-engine.js"></script>
+    <script>
+        let activeBlocks = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLpTable();
+            load10SectionsTemplateIntoVisualBuilder();
+        });
+
+        function renderLpTable() {
+            const lps = getMasterData('landing_pages') || [];
+            const tableBody = document.querySelector('#lp_table tbody');
+            if (tableBody) {
+                tableBody.innerHTML = lps.map(l => {
+                    let blocksCount = 0;
+                    try {
+                        const parsed = typeof l.blocks_json === 'string' ? JSON.parse(l.blocks_json) : l.blocks_json;
+                        blocksCount = Array.isArray(parsed) ? parsed.length : 0;
+                    } catch(e){}
+
+                    return `
+                        <tr>
+                            <td><strong>#${l.id}</strong></td>
+                            <td><strong>${escapeHtml(l.title_ar)}</strong></td>
+                            <td><code>${escapeHtml(l.slug)}</code></td>
+                            <td><span style="background:rgba(212,175,55,0.15); color:#D4AF37; padding:2px 8px; border-radius:6px; font-weight:800; font-size:0.8rem;">${blocksCount} سكاشن 💎</span></td>
+                            <td>
+                                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                                    <a href="../lp.php?slug=${l.slug}" target="_blank" style="color:#38BDF8; font-weight:700; font-size:0.82rem;">PHP 🔗</a>
+                                    <a href="../lp.html?slug=${l.slug}" target="_blank" style="color:#4ADE80; font-weight:700; font-size:0.82rem;">HTML 🌐</a>
+                                </div>
+                            </td>
+                            <td>${l.is_published !== false ? '<span style="color:#4ADE80; font-weight:700;">نشطة 🟢</span>' : '<span style="color:#F87171; font-weight:700;">مسودة 🔴</span>'}</td>
+                            <td>
+                                <div style="display:flex; gap:6px;">
+                                    <button class="btn-secondary-action" onclick="editLpItem(${l.id})">تعديل ✏️</button>
+                                    <button class="btn-danger-action" onclick="deleteLpItem(${l.id})">حذف 🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('') || '<tr><td colspan="7" style="text-align:center; padding:2rem; color:var(--admin-text-muted);">لا توجد صفحات هبوط منشأة بعد.</td></tr>';
+            }
+        }
+
+        function load10SectionsTemplateIntoVisualBuilder() {
+            const defaultBlocks = DEFAULT_SITE_DATA.landing_pages[0].blocks_json;
+            activeBlocks = typeof defaultBlocks === 'string' ? JSON.parse(defaultBlocks) : JSON.parse(JSON.stringify(defaultBlocks));
+            
+            document.getElementById('title_ar').value = "منظومة النمو الشاملة واستراتيجيات الشراء الإعلاني";
+            document.getElementById('title_en').value = "Enterprise Growth & Scaled Media Buying";
+            document.getElementById('slug').value = "enterprise-growth";
+            document.getElementById('meta_description_ar').value = "صفحة هبوط مخصصة لمضاعفة عائد الإعلانات وهندسة مسارات التحويل للمتاجر والشركات الكبرى.";
+            
+            renderVisualBuilder();
+        }
+
+        function addNewSectionToBuilder(type) {
+            const allTemplates = JSON.parse(DEFAULT_SITE_DATA.landing_pages[0].blocks_json);
+            const tmpl = allTemplates.find(b => b.type === type) || { type: type, title_ar: "قسم جديد " + type };
+            activeBlocks.push(JSON.parse(JSON.stringify(tmpl)));
+            renderVisualBuilder();
+            alert('تم إضافة قسم [' + type + '] بنجاح! يمكنك الآن تعديل حقوله بالأسفل.');
+        }
+
+        function moveSection(index, direction) {
+            if (direction === 'up' && index > 0) {
+                const temp = activeBlocks[index];
+                activeBlocks[index] = activeBlocks[index - 1];
+                activeBlocks[index - 1] = temp;
+            } else if (direction === 'down' && index < activeBlocks.length - 1) {
+                const temp = activeBlocks[index];
+                activeBlocks[index] = activeBlocks[index + 1];
+                activeBlocks[index + 1] = temp;
+            }
+            renderVisualBuilder();
+        }
+
+        function deleteSection(index) {
+            if (confirm('هل أنت متأكد من حذف هذا السكشن من بنية الصفحة؟')) {
+                activeBlocks.splice(index, 1);
+                renderVisualBuilder();
+            }
+        }
+
+        function addSubItem(blockIndex, keyName) {
+            if (!activeBlocks[blockIndex][keyName]) activeBlocks[blockIndex][keyName] = [];
+            if (keyName === 'items') {
+                activeBlocks[blockIndex][keyName].push({ icon: "⚡", title_ar: "عنوان جديد", desc_ar: "وصف جديد..." });
+            } else if (keyName === 'steps') {
+                activeBlocks[blockIndex][keyName].push({ num: "0" + (activeBlocks[blockIndex][keyName].length + 1), title_ar: "عنوان الخطوة", desc_ar: "تفاصيل الخطوة..." });
+            } else if (keyName === 'stats') {
+                activeBlocks[blockIndex][keyName].push({ number: "+100%", label_ar: "مؤشر جديد" });
+            } else if (keyName === 'faqs') {
+                activeBlocks[blockIndex][keyName].push({ q_ar: "سؤال جديد؟", a_ar: "إجابة جديدة..." });
+            }
+            renderVisualBuilder();
+        }
+
+        function deleteSubItem(blockIndex, keyName, itemIndex) {
+            activeBlocks[blockIndex][keyName].splice(itemIndex, 1);
+            renderVisualBuilder();
+        }
+
+        function renderVisualBuilder() {
+            const container = document.getElementById('visual_sections_container');
+            document.getElementById('sections_count_badge').innerText = activeBlocks.length + ' سكاشن مضمنة 💎';
+
+            if (activeBlocks.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:3rem; color:var(--admin-text-muted); background:rgba(255,255,255,0.02); border-radius:12px;">لم يتم إضافة أي سكاشن بعد. انقر فوق أحد القوالب بالأعلى لبدء البناء!</div>';
+                return;
+            }
+
+            container.innerHTML = activeBlocks.map((blk, i) => {
+                const type = blk.type || 'hero';
+                return `
+                    <div class="section-editor-card">
+                        <div class="section-editor-header">
+                            <div class="section-title-tag">
+                                <span>#${i + 1}</span>
+                                <span>${getBlockTypeNameAr(type)}</span>
+                            </div>
+                            <div style="display:flex; gap:8px;">
+                                ${i > 0 ? `<button type="button" class="btn-secondary-action" onclick="moveSection(${i}, 'up')">⬆️ للأعلى</button>` : ''}
+                                ${i < activeBlocks.length - 1 ? `<button type="button" class="btn-secondary-action" onclick="moveSection(${i}, 'down')">⬇️ الأسفل</button>` : ''}
+                                <button type="button" class="btn-danger-action" onclick="deleteSection(${i})">حذف السكشن 🗑️</button>
+                            </div>
+                        </div>
+
+                        ${renderFieldsForBlock(blk, i)}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getBlockTypeNameAr(type) {
+            const names = {
+                hero: '🚀 قسم الهيدر والقيمة الجوهرية (Hero)',
+                problems: '⚠️ قسم المشاكل والتحديات (Pain Points)',
+                solution: '🎯 قسم الحل الاستراتيجي (Solution)',
+                features: '⚡ قسم المزايا التنافسية (Features)',
+                process: '🛤️ قسم خريطة الطريق 4 خطوات (Process)',
+                case_studies: '📊 قسم الأرقام والإنجازات (Proven Stats)',
+                testimonials: '⭐ قسم آراء العملاء والشهادات (Testimonials)',
+                guarantee: '🛡️ قسم الضمان الذهبي 100% (Guarantee)',
+                pricing: '💳 قسم عرض الباقة والتسعير (Pricing Offer)',
+                faq_cta: '❓ قسم الأسئلة والتحويل الفوري (FAQ & CTA)'
+            };
+            return names[type] || type;
+        }
+
+        function renderFieldsForBlock(blk, i) {
+            const type = blk.type;
+
+            if (type === 'hero') {
+                return `
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">نص البادج الترويجي العلوي Badge Text</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.badge_ar || '')}" onchange="activeBlocks[${i}].badge_ar = this.value">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">العنوان الرئيسي للسكشن Main Title *</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.title_ar || '')}" onchange="activeBlocks[${i}].title_ar = this.value">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">العنوان الفرعي الوصفي Subtitle</label>
+                        <textarea class="form-textarea" rows="2" onchange="activeBlocks[${i}].subtitle_ar = this.value">${escapeHtml(blk.subtitle_ar || '')}</textarea>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">نص زر التحويل الرئيسي Primary CTA Text</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.primary_cta_text_ar || '')}" onchange="activeBlocks[${i}].primary_cta_text_ar = this.value">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">رابط الزر الرئيسي Primary CTA Link</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.primary_cta_link || '')}" onchange="activeBlocks[${i}].primary_cta_link = this.value">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">نص زر الواتساب / الجانبي Secondary CTA</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.secondary_cta_text_ar || '')}" onchange="activeBlocks[${i}].secondary_cta_text_ar = this.value">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">رابط الواتساب / الجانبي Secondary Link</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.secondary_cta_link || '')}" onchange="activeBlocks[${i}].secondary_cta_link = this.value">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">عبارة الموثوقية السريعة Trust Note</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.trust_note_ar || '')}" onchange="activeBlocks[${i}].trust_note_ar = this.value">
+                    </div>
+                `;
+            }
+
+            if (type === 'problems' || type === 'solution' || type === 'features') {
+                const items = blk.items || [];
+                const itemsHtml = items.map((item, idx) => `
+                    <div class="sub-item-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <strong style="color:#FFF;">عنصر #${idx + 1}</strong>
+                            <button type="button" class="btn-danger-action" onclick="deleteSubItem(${i}, 'items', ${idx})">حذف 🗑️</button>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group" style="max-width:100px;">
+                                <label class="form-label">الأيقونة Emoji</label>
+                                <input type="text" class="form-input" value="${escapeHtml(item.icon || '⚡')}" onchange="activeBlocks[${i}].items[${idx}].icon = this.value">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">العنوان</label>
+                                <input type="text" class="form-input" value="${escapeHtml(item.title_ar || '')}" onchange="activeBlocks[${i}].items[${idx}].title_ar = this.value">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">الوصف التفصيلي</label>
+                            <input type="text" class="form-input" value="${escapeHtml(item.desc_ar || '')}" onchange="activeBlocks[${i}].items[${idx}].desc_ar = this.value">
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="form-group">
+                        <label class="form-label">عنوان السكشن</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.title_ar || '')}" onchange="activeBlocks[${i}].title_ar = this.value">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الوصف الفرعي</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.subtitle_ar || '')}" onchange="activeBlocks[${i}].subtitle_ar = this.value">
+                    </div>
+                    <div style="margin-top:1rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <strong style="color:#D4AF37;">عناصر السكشن (${items.length}):</strong>
+                            <button type="button" class="btn-secondary-action" onclick="addSubItem(${i}, 'items')">➕ إضافة عنصر جديد</button>
+                        </div>
+                        ${itemsHtml}
+                    </div>
+                `;
+            }
+
+            if (type === 'process') {
+                const steps = blk.steps || [];
+                const stepsHtml = steps.map((st, idx) => `
+                    <div class="sub-item-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <strong style="color:#FFF;">الخطوة #${idx + 1}</strong>
+                            <button type="button" class="btn-danger-action" onclick="deleteSubItem(${i}, 'steps', ${idx})">حذف 🗑️</button>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group" style="max-width:100px;">
+                                <label class="form-label">الرقم</label>
+                                <input type="text" class="form-input" value="${escapeHtml(st.num || '01')}" onchange="activeBlocks[${i}].steps[${idx}].num = this.value">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">عنوان الخطوة</label>
+                                <input type="text" class="form-input" value="${escapeHtml(st.title_ar || '')}" onchange="activeBlocks[${i}].steps[${idx}].title_ar = this.value">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">تفاصيل الخطوة</label>
+                            <input type="text" class="form-input" value="${escapeHtml(st.desc_ar || '')}" onchange="activeBlocks[${i}].steps[${idx}].desc_ar = this.value">
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="form-group">
+                        <label class="form-label">عنوان السكشن</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.title_ar || '')}" onchange="activeBlocks[${i}].title_ar = this.value">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الوصف الفرعي</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.subtitle_ar || '')}" onchange="activeBlocks[${i}].subtitle_ar = this.value">
+                    </div>
+                    <div style="margin-top:1rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <strong style="color:#D4AF37;">خطوات العمل (${steps.length}):</strong>
+                            <button type="button" class="btn-secondary-action" onclick="addSubItem(${i}, 'steps')">➕ إضافة خطوة جديدة</button>
+                        </div>
+                        ${stepsHtml}
+                    </div>
+                `;
+            }
+
+            if (type === 'case_studies') {
+                const stats = blk.stats || [];
+                const statsHtml = stats.map((st, idx) => `
+                    <div class="sub-item-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <strong style="color:#FFF;">مؤشر أداء #${idx + 1}</strong>
+                            <button type="button" class="btn-danger-action" onclick="deleteSubItem(${i}, 'stats', ${idx})">حذف 🗑️</button>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">الرقم/النسبة (مثال: +350%)</label>
+                                <input type="text" class="form-input" value="${escapeHtml(st.number || '')}" onchange="activeBlocks[${i}].stats[${idx}].number = this.value">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">اسم المؤشر/الإنجاز</label>
+                                <input type="text" class="form-input" value="${escapeHtml(st.label_ar || '')}" onchange="activeBlocks[${i}].stats[${idx}].label_ar = this.value">
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="form-group">
+                        <label class="form-label">عنوان السكشن</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.title_ar || '')}" onchange="activeBlocks[${i}].title_ar = this.value">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الوصف الفرعي</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.subtitle_ar || '')}" onchange="activeBlocks[${i}].subtitle_ar = this.value">
+                    </div>
+                    <div style="margin-top:1rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <strong style="color:#D4AF37;">مؤشرات الإنجاز (${stats.length}):</strong>
+                            <button type="button" class="btn-secondary-action" onclick="addSubItem(${i}, 'stats')">➕ إضافة مؤشر جديد</button>
+                        </div>
+                        ${statsHtml}
+                    </div>
+                `;
+            }
+
+            if (type === 'testimonials') {
+                const items = blk.items || [];
+                const itemsHtml = items.map((tm, idx) => `
+                    <div class="sub-item-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <strong style="color:#FFF;">رأي عميل #${idx + 1}</strong>
+                            <button type="button" class="btn-danger-action" onclick="deleteSubItem(${i}, 'items', ${idx})">حذف 🗑️</button>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">اسم العميل</label>
+                                <input type="text" class="form-input" value="${escapeHtml(tm.name_ar || '')}" onchange="activeBlocks[${i}].items[${idx}].name_ar = this.value">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">المسمى الوظيفي/الشركة</label>
+                                <input type="text" class="form-input" value="${escapeHtml(tm.role_ar || '')}" onchange="activeBlocks[${i}].items[${idx}].role_ar = this.value">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">نص الشهادة / التقييم</label>
+                            <textarea class="form-textarea" rows="2" onchange="activeBlocks[${i}].items[${idx}].quote_ar = this.value">${escapeHtml(tm.quote_ar || '')}</textarea>
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="form-group">
+                        <label class="form-label">عنوان السكشن</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.title_ar || '')}" onchange="activeBlocks[${i}].title_ar = this.value">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">الوصف الفرعي</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.subtitle_ar || '')}" onchange="activeBlocks[${i}].subtitle_ar = this.value">
+                    </div>
+                    <div style="margin-top:1rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <strong style="color:#D4AF37;">آراء العملاء (${items.length}):</strong>
+                            <button type="button" class="btn-secondary-action" onclick="addSubItem(${i}, 'items')">➕ إضافة رأي عميل</button>
+                        </div>
+                        ${itemsHtml}
+                    </div>
+                `;
+            }
+
+            if (type === 'guarantee') {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">عنوان الضمان</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.title_ar || '')}" onchange="activeBlocks[${i}].title_ar = this.value">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">تفاصيل نص الضمان وإعادة المخاطر</label>
+                        <textarea class="form-textarea" rows="3" onchange="activeBlocks[${i}].subtitle_ar = this.value">${escapeHtml(blk.subtitle_ar || '')}</textarea>
+                    </div>
+                `;
+            }
+
+            if (type === 'pricing') {
+                const ftList = Array.isArray(blk.features) ? blk.features.join('\n') : (blk.features || '');
+                return `
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">عنوان السكشن</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.title_ar || '')}" onchange="activeBlocks[${i}].title_ar = this.value">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">اسم الباقة Package Name</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.package_name_ar || '')}" onchange="activeBlocks[${i}].package_name_ar = this.value">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">السعر الحالي Price</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.price_ar || '')}" onchange="activeBlocks[${i}].price_ar = this.value">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">السعر السابق Original Price</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.original_price_ar || '')}" onchange="activeBlocks[${i}].original_price_ar = this.value">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">بادج الخصم Discount Badge</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.discount_badge_ar || '')}" onchange="activeBlocks[${i}].discount_badge_ar = this.value">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">مزايا ومحتويات الباقة (كل ميزة في سطر)</label>
+                        <textarea class="form-textarea" rows="5" onchange="activeBlocks[${i}].features = this.value.split('\\n').filter(x=>x.trim())">${escapeHtml(ftList)}</textarea>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">نص زر الاشتراك CTA Text</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.cta_text_ar || '')}" onchange="activeBlocks[${i}].cta_text_ar = this.value">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">رابط زر الاشتراك CTA Link</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.cta_link || '')}" onchange="activeBlocks[${i}].cta_link = this.value">
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (type === 'faq_cta') {
+                const faqs = blk.faqs || [];
+                const faqsHtml = faqs.map((f, idx) => `
+                    <div class="sub-item-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <strong style="color:#FFF;">سؤال #${idx + 1}</strong>
+                            <button type="button" class="btn-danger-action" onclick="deleteSubItem(${i}, 'faqs', ${idx})">حذف 🗑️</button>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">السؤال</label>
+                            <input type="text" class="form-input" value="${escapeHtml(f.q_ar || '')}" onchange="activeBlocks[${i}].faqs[${idx}].q_ar = this.value">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">الإجابة</label>
+                            <input type="text" class="form-input" value="${escapeHtml(f.a_ar || '')}" onchange="activeBlocks[${i}].faqs[${idx}].a_ar = this.value">
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div class="form-group">
+                        <label class="form-label">عنوان قسم الأسئلة</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.title_ar || '')}" onchange="activeBlocks[${i}].title_ar = this.value">
+                    </div>
+                    <div style="margin-top:1rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <strong style="color:#D4AF37;">الأسئلة والأجوبة (${faqs.length}):</strong>
+                            <button type="button" class="btn-secondary-action" onclick="addSubItem(${i}, 'faqs')">➕ إضافة سؤال جديد</button>
+                        </div>
+                        ${faqsHtml}
+                    </div>
+                    <hr style="border-color:rgba(255,255,255,0.1); margin:1.5rem 0;">
+                    <div class="form-group">
+                        <label class="form-label">عنوان البانر الختامي الفوري Final CTA Title</label>
+                        <input type="text" class="form-input" value="${escapeHtml(blk.final_cta_title_ar || '')}" onchange="activeBlocks[${i}].final_cta_title_ar = this.value">
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">نص زر التواصل الختامي</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.final_cta_btn_ar || '')}" onchange="activeBlocks[${i}].final_cta_btn_ar = this.value">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">رابط الواتساب / التواصل</label>
+                            <input type="text" class="form-input" value="${escapeHtml(blk.whatsapp_url || '')}" onchange="activeBlocks[${i}].whatsapp_url = this.value">
+                        </div>
+                    </div>
+                `;
+            }
+
+            return '';
+        }
+
+        function editLpItem(id) {
+            const lps = getMasterData('landing_pages') || [];
+            const item = lps.find(l => l.id === id);
+            if (item) {
+                document.getElementById('lp_id').value = item.id;
+                document.getElementById('title_ar').value = item.title_ar || '';
+                document.getElementById('title_en').value = item.title_en || '';
+                document.getElementById('slug').value = item.slug || '';
+                document.getElementById('meta_description_ar').value = item.meta_description_ar || '';
+                
+                try {
+                    activeBlocks = typeof item.blocks_json === 'string' ? JSON.parse(item.blocks_json) : item.blocks_json;
+                } catch(e) {
+                    activeBlocks = [];
+                }
+                
+                renderVisualBuilder();
+                document.getElementById('lp_form_card').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function resetLpForm() {
+            document.getElementById('lp_id').value = 0;
+            document.getElementById('lp_form').reset();
+            activeBlocks = [];
+            renderVisualBuilder();
+        }
+
+        function handleLpSubmit(e) {
+            e.preventDefault();
+            let lps = getMasterData('landing_pages') || [];
+            const editId = parseInt(document.getElementById('lp_id').value || 0);
+
+            const blocksVal = JSON.stringify(activeBlocks);
+
+            const itemData = {
+                id: editId > 0 ? editId : Date.now(),
+                title_ar: document.getElementById('title_ar').value,
+                title_en: document.getElementById('title_en').value,
+                slug: document.getElementById('slug').value,
+                meta_description_ar: document.getElementById('meta_description_ar').value,
+                blocks_json: blocksVal,
+                is_published: true
+            };
+
+            if (editId > 0) {
+                const idx = lps.findIndex(l => l.id === editId);
+                if (idx !== -1) lps[idx] = itemData;
+            } else {
+                lps.unshift(itemData);
+            }
+
+            setMasterData('landing_pages', lps);
+            renderLpTable();
+            resetLpForm();
+            alert('تم حفظ ونشر صفحة الهبوط بنجاح! 🚀');
+        }
+
+        function deleteLpItem(id) {
+            if (confirm('هل أنت متأكد من حذف صفحة الهبوط؟')) {
+                let lps = getMasterData('landing_pages') || [];
+                lps = lps.filter(l => l.id !== id);
+                setMasterData('landing_pages', lps);
+                renderLpTable();
+                alert('تم حذف صفحة الهبوط.');
+            }
+        }
+    </script>
+</body>
+</html>

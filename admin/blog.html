@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المقالات والـ SEO | لوحة تحكم حسن سرحان</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --admin-bg: #070D1E;
+            --admin-card-bg: rgba(15, 23, 42, 0.75);
+            --admin-border: rgba(255, 255, 255, 0.12);
+            --admin-primary: #D4AF37;
+            --admin-text: #F8FAFC;
+            --admin-text-muted: #94A3B8;
+            --admin-danger: #EF4444;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--admin-bg); color: var(--admin-text); min-height: 100vh; display: flex; flex-direction: column; }
+        .admin-topbar { height: 70px; background: rgba(11, 19, 43, 0.9); border-bottom: 1px solid var(--admin-border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; }
+        .admin-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #FFF; }
+        .admin-brand-icon { width: 42px; height: 42px; background: linear-gradient(135deg, #D4AF37, #B48811); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #0B132B; }
+        .admin-wrapper { display: flex; flex: 1; }
+        .admin-sidebar { width: 260px; background: rgba(11, 19, 43, 0.6); border-left: 1px solid var(--admin-border); padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 6px; }
+        .sidebar-link { display: flex; align-items: center; gap: 12px; padding: 10px 16px; color: var(--admin-text-muted); text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 0.92rem; }
+        .sidebar-link.active { color: #0B132B; background: linear-gradient(135deg, #D4AF37, #E5C158); font-weight: 800; }
+        .admin-content { flex: 1; padding: 2rem; max-width: 1300px; }
+        .glass-card { background: var(--admin-card-bg); border: 1px solid var(--admin-border); border-radius: 16px; padding: 1.8rem; margin-bottom: 1.8rem; }
+        .card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem; }
+        .card-title { font-size: 1.25rem; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 10px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.2rem; }
+        .form-label { font-size: 0.88rem; font-weight: 700; color: var(--admin-text-muted); }
+        .form-input, .form-textarea { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--admin-border); color: #FFF; padding: 10px 14px; border-radius: 10px; font-size: 0.92rem; outline: none; }
+        .btn-action { background: linear-gradient(135deg, #D4AF37, #B48811); color: #0B132B; border: none; padding: 10px 22px; border-radius: 10px; font-weight: 800; font-size: 0.92rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-secondary-action { background: rgba(255, 255, 255, 0.1); color: #FFF; border: 1px solid var(--admin-border); padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; }
+        .btn-danger-action { background: rgba(239, 68, 68, 0.2); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+        .admin-table { width: 100%; border-collapse: collapse; text-align: right; font-size: 0.9rem; }
+        .admin-table th { background: rgba(255, 255, 255, 0.05); color: var(--admin-primary); padding: 12px 14px; font-weight: 800; border-bottom: 1px solid var(--admin-border); }
+        .admin-table td { padding: 12px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: var(--admin-text); vertical-align: middle; }
+    </style>
+</head>
+<body>
+
+    <header class="admin-topbar">
+        <a href="index.html" class="admin-brand">
+            <div class="admin-brand-icon">H</div>
+            <div>
+                <div style="font-weight:800;">لوحة التحكم القيادية</div>
+                <div style="font-size:0.75rem; color:var(--admin-primary);">حسن سرحان | HSSN-SRHAN</div>
+            </div>
+        </a>
+        <div style="display:flex; gap:12px; align-items:center;">
+            <a href="../blog.html" target="_blank" class="btn-secondary-action">🌐 المعاينة الحية للمقالات</a>
+            <a href="login.html" class="btn-danger-action">خروج 🚪</a>
+        </div>
+    </header>
+
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <a href="index.html" class="sidebar-link"><i class="fas fa-tachometer-alt"></i> لوحة الأداء العام</a>
+            <a href="home.html" class="sidebar-link"><i class="fas fa-home"></i> الرئيسية والشورتس</a>
+            <a href="qualifications.html" class="sidebar-link"><i class="fas fa-award"></i> المؤهلات (18 شهادة)</a>
+            <a href="career.html" class="sidebar-link"><i class="fas fa-briefcase"></i> السيرة المهنية</a>
+            <a href="portfolio.html" class="sidebar-link"><i class="fas fa-folder-open"></i> معرض الأعمال (13 حالة)</a>
+            <a href="services.html" class="sidebar-link"><i class="fas fa-concierge-bell"></i> الخدمات والحلول</a>
+            <a href="courses.html" class="sidebar-link"><i class="fas fa-graduation-cap"></i> الكورسات والماستر كلاس</a>
+            <a href="digital-products.html" class="sidebar-link"><i class="fas fa-credit-card"></i> المنتجات وإيصالات D360</a>
+            <a href="blog.html" class="sidebar-link active"><i class="fas fa-blog"></i> المقالات والـ SEO</a>
+            <a href="contact-settings.html" class="sidebar-link"><i class="fas fa-headset"></i> التواصل والحجوزات</a>
+            <a href="landing-pages.html" class="sidebar-link"><i class="fas fa-layer-group"></i> لاندنج بيدج بيلدر</a>
+            <a href="users.html" class="sidebar-link"><i class="fas fa-users-cog"></i> المساعدون والصلاحيات</a>
+        </aside>
+
+        <main class="admin-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.8rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 900; color: #FFF; margin-bottom: 4px;">إدارة المقالات والمحتوى التخصصي (Blog CMS)</h1>
+                    <p style="color: var(--admin-text-muted); font-size: 0.92rem;">كتابة وإدارة المقالات، وإعدادات الميتا وربط مقالات لينكد إن.</p>
+                </div>
+                <button onclick="resetArticleForm()" class="btn-action">➕ كتابة مقال جديد</button>
+            </div>
+
+            <!-- Form Card -->
+            <div class="glass-card" id="article_form_card">
+                <div class="card-header-flex">
+                    <h2 class="card-title" id="form_title"><i class="fas fa-edit"></i> إضافة مقال / دراسة فكرية جديدة</h2>
+                </div>
+
+                <form id="article_form" onsubmit="handleArticleSubmit(event)">
+                    <input type="hidden" id="article_id" value="0">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">عنوان المقال (عربي) *</label>
+                            <input type="text" id="title_ar" class="form-input" required placeholder="منهجية تحسين معدلات التحويل CRO للمتاجر">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">عنوان المقال (إنجليزي)</label>
+                            <input type="text" id="title_en" class="form-input" placeholder="E-commerce CRO Strategies in GCC">
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">الرابط المباشر Slug *</label>
+                            <input type="text" id="slug" class="form-input" required placeholder="cro-strategies-gcc">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">رابط المقال الأصلي على LinkedIn</label>
+                            <input type="text" id="linkedin_url" class="form-input" placeholder="https://linkedin.com/in/hsn96srhan">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">محتوى المقال الكامل (عربي)</label>
+                        <textarea id="content_ar" class="form-textarea" rows="6"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-action" id="submit_btn">💾 نشر المقال بالشبكة</button>
+                </form>
+            </div>
+
+            <!-- Articles Table -->
+            <div class="glass-card">
+                <div class="card-header-flex">
+                    <h2 class="card-title"><i class="fas fa-list"></i> المقالات المنشورة حالياً</h2>
+                </div>
+                <div style="width:100%; overflow-x:auto;">
+                    <table class="admin-table" id="articles_table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>عنوان المقال</th>
+                                <th>الرابط Slug</th>
+                                <th>رابط LinkedIn</th>
+                                <th>التاريخ</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/site-data.js"></script>
+    <script src="assets/js/admin-engine.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderBlogControl();
+        });
+
+        function renderBlogControl() {
+            const arts = getMasterData('articles') || [];
+            const tableBody = document.querySelector('#articles_table tbody');
+            if (tableBody) {
+                tableBody.innerHTML = arts.map(a => `
+                    <tr>
+                        <td><strong>#${a.id}</strong></td>
+                        <td><strong>${escapeHtml(a.title_ar)}</strong></td>
+                        <td><code>${escapeHtml(a.slug)}</code></td>
+                        <td>${a.linkedin_url ? `<a href="${a.linkedin_url}" target="_blank" style="color:#38BDF8;">عرض المقال 🔗</a>` : '-'}</td>
+                        <td>${a.created_at || 'الآن'}</td>
+                        <td>
+                            <div style="display:flex; gap:6px;">
+                                <button class="btn-secondary-action" onclick="editArticleItem(${a.id})">تعديل ✏️</button>
+                                <button class="btn-danger-action" onclick="deleteArticleItem(${a.id})">حذف 🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function editArticleItem(id) {
+            const arts = getMasterData('articles') || [];
+            const item = arts.find(a => a.id === id);
+            if (item) {
+                document.getElementById('article_id').value = item.id;
+                document.getElementById('title_ar').value = item.title_ar || '';
+                document.getElementById('title_en').value = item.title_en || '';
+                document.getElementById('slug').value = item.slug || '';
+                document.getElementById('linkedin_url').value = item.linkedin_url || '';
+                document.getElementById('content_ar').value = item.content_ar || '';
+                document.getElementById('form_title').innerHTML = '<i class="fas fa-edit"></i> تعديل المقال #' + item.id;
+                document.getElementById('submit_btn').textContent = '💾 حفظ تعديلات المقال';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function deleteArticleItem(id) {
+            if (confirm('هل أنت متأكد من حذف هذا المقال؟')) {
+                let arts = getMasterData('articles') || [];
+                arts = arts.filter(a => a.id !== id);
+                setMasterData('articles', arts);
+                renderBlogControl();
+                alert('تم حذف المقال بنجاح.');
+            }
+        }
+
+        function resetArticleForm() {
+            document.getElementById('article_id').value = 0;
+            document.getElementById('article_form').reset();
+            document.getElementById('form_title').innerHTML = '<i class="fas fa-edit"></i> إضافة مقال / دراسة فكرية جديدة';
+            document.getElementById('submit_btn').textContent = '💾 نشر المقال بالشبكة';
+        }
+
+        function handleArticleSubmit(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('article_id').value);
+            let arts = getMasterData('articles') || [];
+
+            const newItem = {
+                id: id > 0 ? id : Date.now(),
+                title_ar: document.getElementById('title_ar').value,
+                title_en: document.getElementById('title_en').value,
+                slug: document.getElementById('slug').value,
+                linkedin_url: document.getElementById('linkedin_url').value,
+                content_ar: document.getElementById('content_ar').value,
+                created_at: new Date().toISOString().split('T')[0],
+                is_published: true
+            };
+
+            if (id > 0) {
+                const idx = arts.findIndex(a => a.id === id);
+                if (idx !== -1) arts[idx] = newItem;
+            } else {
+                arts.unshift(newItem);
+            }
+
+            setMasterData('articles', arts);
+            renderBlogControl();
+            resetArticleForm();
+            alert('تم حفظ المقال بنجاح! 📝');
+        }
+    </script>
+</body>
+</html>

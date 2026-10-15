@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الخدمات والحلول الإستراتيجية | لوحة تحكم حسن سرحان</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --admin-bg: #070D1E;
+            --admin-card-bg: rgba(15, 23, 42, 0.75);
+            --admin-border: rgba(255, 255, 255, 0.12);
+            --admin-primary: #D4AF37;
+            --admin-text: #F8FAFC;
+            --admin-text-muted: #94A3B8;
+            --admin-danger: #EF4444;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--admin-bg); color: var(--admin-text); min-height: 100vh; display: flex; flex-direction: column; }
+        .admin-topbar { height: 70px; background: rgba(11, 19, 43, 0.9); border-bottom: 1px solid var(--admin-border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; }
+        .admin-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #FFF; }
+        .admin-brand-icon { width: 42px; height: 42px; background: linear-gradient(135deg, #D4AF37, #B48811); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #0B132B; }
+        .admin-wrapper { display: flex; flex: 1; }
+        .admin-sidebar { width: 260px; background: rgba(11, 19, 43, 0.6); border-left: 1px solid var(--admin-border); padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 6px; }
+        .sidebar-link { display: flex; align-items: center; gap: 12px; padding: 10px 16px; color: var(--admin-text-muted); text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 0.92rem; }
+        .sidebar-link.active { color: #0B132B; background: linear-gradient(135deg, #D4AF37, #E5C158); font-weight: 800; }
+        .admin-content { flex: 1; padding: 2rem; max-width: 1300px; }
+        .glass-card { background: var(--admin-card-bg); border: 1px solid var(--admin-border); border-radius: 16px; padding: 1.8rem; margin-bottom: 1.8rem; }
+        .card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem; }
+        .card-title { font-size: 1.25rem; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 10px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.2rem; }
+        .form-label { font-size: 0.88rem; font-weight: 700; color: var(--admin-text-muted); }
+        .form-input, .form-textarea { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--admin-border); color: #FFF; padding: 10px 14px; border-radius: 10px; font-size: 0.92rem; outline: none; }
+        .btn-action { background: linear-gradient(135deg, #D4AF37, #B48811); color: #0B132B; border: none; padding: 10px 22px; border-radius: 10px; font-weight: 800; font-size: 0.92rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-secondary-action { background: rgba(255, 255, 255, 0.1); color: #FFF; border: 1px solid var(--admin-border); padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; text-decoration: none; }
+        .btn-danger-action { background: rgba(239, 68, 68, 0.2); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+        .admin-table { width: 100%; border-collapse: collapse; text-align: right; font-size: 0.9rem; }
+        .admin-table th { background: rgba(255, 255, 255, 0.05); color: var(--admin-primary); padding: 12px 14px; font-weight: 800; border-bottom: 1px solid var(--admin-border); }
+        .admin-table td { padding: 12px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: var(--admin-text); vertical-align: middle; }
+    </style>
+</head>
+<body>
+
+    <header class="admin-topbar">
+        <a href="index.html" class="admin-brand">
+            <div class="admin-brand-icon">H</div>
+            <div>
+                <div style="font-weight:800;">لوحة التحكم القيادية</div>
+                <div style="font-size:0.75rem; color:var(--admin-primary);">حسن سرحان | HSSN-SRHAN</div>
+            </div>
+        </a>
+        <div style="display:flex; gap:12px; align-items:center;">
+            <a href="../services.html" target="_blank" class="btn-secondary-action">🌐 المعاينة الحية للخدمات</a>
+            <a href="login.html" class="btn-danger-action">خروج 🚪</a>
+        </div>
+    </header>
+
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar">
+            <a href="index.html" class="sidebar-link"><i class="fas fa-tachometer-alt"></i> لوحة الأداء العام</a>
+            <a href="home.html" class="sidebar-link"><i class="fas fa-home"></i> الرئيسية والشورتس</a>
+            <a href="qualifications.html" class="sidebar-link"><i class="fas fa-award"></i> المؤهلات (18 شهادة)</a>
+            <a href="career.html" class="sidebar-link"><i class="fas fa-briefcase"></i> السيرة المهنية</a>
+            <a href="portfolio.html" class="sidebar-link"><i class="fas fa-folder-open"></i> معرض الأعمال (13 حالة)</a>
+            <a href="services.html" class="sidebar-link active"><i class="fas fa-concierge-bell"></i> الخدمات والحلول</a>
+            <a href="courses.html" class="sidebar-link"><i class="fas fa-graduation-cap"></i> الكورسات والماستر كلاس</a>
+            <a href="digital-products.html" class="sidebar-link"><i class="fas fa-credit-card"></i> المنتجات وإيصالات D360</a>
+            <a href="blog.html" class="sidebar-link"><i class="fas fa-blog"></i> المقالات والـ SEO</a>
+            <a href="contact-settings.html" class="sidebar-link"><i class="fas fa-headset"></i> التواصل والحجوزات</a>
+            <a href="landing-pages.html" class="sidebar-link"><i class="fas fa-layer-group"></i> لاندنج بيدج بيلدر</a>
+            <a href="users.html" class="sidebar-link"><i class="fas fa-users-cog"></i> المساعدون والصلاحيات</a>
+        </aside>
+
+        <main class="admin-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.8rem;">
+                <div>
+                    <h1 style="font-size: 1.8rem; font-weight: 900; color: #FFF; margin-bottom: 4px;">إدارة الخدمات والحلول التسويقية</h1>
+                    <p style="color: var(--admin-text-muted); font-size: 0.92rem;">إدارة الخدمات، الباقات، المميزات المتاحة، وروابط الحجز المباشر.</p>
+                </div>
+                <button onclick="resetServiceForm()" class="btn-action">➕ إضافة خدمة جديدة</button>
+            </div>
+
+            <!-- Form Card -->
+            <div class="glass-card" id="service_form_card">
+                <div class="card-header-flex">
+                    <h2 class="card-title" id="form_title"><i class="fas fa-concierge-bell"></i> إضافة خدمة تسويقية جديدة</h2>
+                </div>
+
+                <form id="service_form" onsubmit="handleServiceSubmit(event)">
+                    <input type="hidden" id="service_id" value="0">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">عنوان الخدمة (عربي) *</label>
+                            <input type="text" id="title_ar" class="form-input" required placeholder="إدارة الإعلانات المدفوعة والأداء">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">عنوان الخدمة (إنجليزي)</label>
+                            <input type="text" id="title_en" class="form-input" placeholder="Paid Advertising & Performance Marketing">
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">شارة الخدمة Badge (عربي)</label>
+                            <input type="text" id="badge_ar" class="form-input" placeholder="🎯 خدمة رئيسية">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">السعر / التكلفة (عربي)</label>
+                            <input type="text" id="price_text_ar" class="form-input" placeholder="حسب الميزانية">
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">الوصف الفرعي (عربي)</label>
+                            <textarea id="subtitle_ar" class="form-textarea" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">الوصف الفرعي (إنجليزي)</label>
+                            <textarea id="subtitle_en" class="form-textarea" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">ترتيب الظهور (sort_order)</label>
+                            <input type="number" id="sort_order" class="form-input" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">نص زر الإجراء CTA</label>
+                            <input type="text" id="cta_text_ar" class="form-input" value="📅 احجز جلسة استشارية">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-action" id="submit_btn">💾 حفظ الخدمة بالشبكة</button>
+                </form>
+            </div>
+
+            <!-- Table Card -->
+            <div class="glass-card">
+                <div class="card-header-flex">
+                    <h2 class="card-title"><i class="fas fa-list-ul"></i> قائمة الخدمات والحلول الحالية</h2>
+                </div>
+
+                <div style="width:100%; overflow-x:auto;">
+                    <table class="admin-table" id="services_table">
+                        <thead>
+                            <tr>
+                                <th># / الترتيب</th>
+                                <th>عنوان الخدمة</th>
+                                <th>الشارة</th>
+                                <th>التكلفة</th>
+                                <th>الحالة</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../assets/js/site-data.js"></script>
+    <script src="assets/js/admin-engine.js"></script>
+    <script>
+        function editServiceItem(id) {
+            const servs = getMasterData('services') || [];
+            const item = servs.find(s => s.id === id);
+            if (item) {
+                document.getElementById('service_id').value = item.id;
+                document.getElementById('title_ar').value = item.title_ar || '';
+                document.getElementById('title_en').value = item.title_en || '';
+                document.getElementById('badge_ar').value = item.badge_ar || '';
+                document.getElementById('price_text_ar').value = item.price_text_ar || '';
+                document.getElementById('subtitle_ar').value = item.subtitle_ar || '';
+                document.getElementById('subtitle_en').value = item.subtitle_en || '';
+                document.getElementById('sort_order').value = item.sort_order || item.id;
+                document.getElementById('cta_text_ar').value = item.cta_text_ar || '📅 احجز جلسة استشارية';
+                document.getElementById('form_title').innerHTML = '<i class="fas fa-edit"></i> تعديل الخدمة #' + item.id;
+                document.getElementById('submit_btn').textContent = '💾 حفظ تعديلات الخدمة';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function deleteServiceItem(id) {
+            if (confirm('هل أنت متأكد من حذف هذه الخدمة؟')) {
+                let servs = getMasterData('services') || [];
+                servs = servs.filter(s => s.id !== id);
+                setMasterData('services', servs);
+                renderServicesControl();
+                alert('تم حذف الخدمة بنجاح.');
+            }
+        }
+
+        function resetServiceForm() {
+            document.getElementById('service_id').value = 0;
+            document.getElementById('service_form').reset();
+            document.getElementById('form_title').innerHTML = '<i class="fas fa-concierge-bell"></i> إضافة خدمة تسويقية جديدة';
+            document.getElementById('submit_btn').textContent = '💾 حفظ الخدمة بالشبكة';
+        }
+
+        function handleServiceSubmit(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('service_id').value);
+            let servs = getMasterData('services') || [];
+
+            const newItem = {
+                id: id > 0 ? id : Date.now(),
+                sort_order: parseInt(document.getElementById('sort_order').value) || servs.length + 1,
+                title_ar: document.getElementById('title_ar').value,
+                title_en: document.getElementById('title_en').value,
+                badge_ar: document.getElementById('badge_ar').value,
+                badge_en: 'Core Service',
+                subtitle_ar: document.getElementById('subtitle_ar').value,
+                subtitle_en: document.getElementById('subtitle_en').value,
+                price_text_ar: document.getElementById('price_text_ar').value,
+                price_text_en: 'Custom Quote',
+                cta_text_ar: document.getElementById('cta_text_ar').value,
+                cta_text_en: 'Book Strategy Session',
+                cta_link: 'contact.html',
+                features: ["إدارة ميزانيات ضخمة", "تحسين العائد على الإعلانات (ROAS)", "استهداف دقيق لأسواق الخليج العربي"],
+                is_published: true
+            };
+
+            if (id > 0) {
+                const idx = servs.findIndex(s => s.id === id);
+                if (idx !== -1) servs[idx] = newItem;
+            } else {
+                servs.push(newItem);
+            }
+
+            setMasterData('services', servs);
+            renderServicesControl();
+            resetServiceForm();
+            alert('تم حفظ الخدمة التسويقية بنجاح! 🎯');
+        }
+    </script>
+</body>
+</html>
