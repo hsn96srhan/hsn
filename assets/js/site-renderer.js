@@ -329,13 +329,32 @@ async function submitD360OrderForm(e) {
     orders.unshift(newOrder);
     setMasterData('bank_orders', orders);
 
-    // Try backend API submit
+    // Try backend API submit (if running on PHP)
     try {
         await fetch('api/submit-order.php', {
             method: 'POST',
             body: formData
         });
     } catch (err) {}
+
+    // Send direct instant email notification to hsn96srhan@gmail.com via FormSubmit
+    try {
+        fetch('https://formsubmit.co/ajax/hsn96srhan@gmail.com', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                _subject: `💳 إيصال تحويل وطلب منتج جديد: ${custName}`,
+                "اسم العميل": custName,
+                "البريد الإلكتروني للعميل": custEmail,
+                "رقم الجوال / الواتساب": custPhone,
+                "المنتج / الكورس": prodTitle,
+                "المبلغ": amount + " ﷼",
+                "ملاحظات إضافية": custNotes || 'لا يوجد',
+                _template: "table",
+                _captcha: "false"
+            })
+        }).catch(() => {});
+    } catch (e) {}
 
     submitBtn.disabled = false;
     submitBtn.textContent = '🚀 تأكيد إرسال الطلب والإيصال';

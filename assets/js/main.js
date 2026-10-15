@@ -327,11 +327,36 @@ document.addEventListener('DOMContentLoaded', () => {
             saveBookingLocally(dateStr, slotStr);
             updateSlotsUI();
 
-            // Save to backend API
+            // Save to backend API (if running on PHP server)
             fetch('api/booking.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
+            }).catch(() => {});
+
+            // Direct instant email dispatch to hsn96srhan@gmail.com (Guaranteed on GitHub Pages & static hosting)
+            const serviceSelect = document.getElementById('booking_service_select');
+            const selectedService = serviceSelect ? serviceSelect.value : 'استشارة استراتيجية';
+
+            fetch('https://formsubmit.co/ajax/hsn96srhan@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: `📅 حجز موعد استشارة جديد: ${formData.full_name || 'عميل'}`,
+                    "الاسم بالكامل": formData.full_name,
+                    "رقم الجوال / واتساب": formData.phone,
+                    "البريد الإلكتروني": formData.email,
+                    "الخدمة المطلوبة": selectedService,
+                    "الشركة / البراند": formData.company_name || 'غير محدد',
+                    "تاريخ المقابلة": formData.booking_date,
+                    "توقيت المقابلة": slotStr,
+                    "ملاحظات أو نبذة عن المشروع": formData.notes || 'لا يوجد',
+                    _template: "table",
+                    _captcha: "false"
+                })
             }).catch(() => {});
 
             // Display success message
@@ -1002,6 +1027,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 msg += currentLang === 'en'
                     ? `\n\nPlease verify transfer receipt and send the product files to my Email & WhatsApp.`
                     : `\n\nيرجى مراجعة إيصال التحويل وإرسال رابط تنزيل الملفات على البريد والواتساب فوراً.`;
+
+                // Dispatch email notification to hsn96srhan@gmail.com
+                fetch('https://formsubmit.co/ajax/hsn96srhan@gmail.com', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({
+                        _subject: `💳 طلب شراء وتحويل بنكي جديد: ${prod} (${price})`,
+                        "المنتج / الكورس": prod,
+                        "السعر": price,
+                        "اسم العميل": name,
+                        "البريد الإلكتروني للعميل": email,
+                        "رقم الجوال / الواتساب": phone,
+                        "ملف الإيصال": fileName,
+                        "الملاحظات": notes || 'لا يوجد',
+                        _template: "table",
+                        _captcha: "false"
+                    })
+                }).catch(() => {});
 
                 const waUrl = `https://wa.me/966570800663?text=${encodeURIComponent(msg)}`;
                 window.open(waUrl, '_blank');
