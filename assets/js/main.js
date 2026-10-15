@@ -323,9 +323,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (inp.tagName === 'TEXTAREA') formData.notes = inp.value;
             });
 
-            // Save locally
+            // Save slot to local slots index
             saveBookingLocally(dateStr, slotStr);
             updateSlotsUI();
+
+            // Save full booking record to master data (renders immediately in admin dashboard)
+            const serviceSelect = document.getElementById('booking_service_select');
+            const selectedService = serviceSelect ? serviceSelect.value : 'استشارة استراتيجية';
+
+            try {
+                let masterBookings = getMasterData('bookings') || [];
+                const newBookingRecord = {
+                    id: Date.now(),
+                    full_name: formData.full_name || 'عميل كريم',
+                    company_name: formData.company_name || 'فردي / غير محدد',
+                    phone: formData.phone || '',
+                    email: formData.email || '',
+                    booking_date: dateStr,
+                    time_slot: slotStr,
+                    notes: (selectedService ? `[${selectedService}] ` : '') + (formData.notes || ''),
+                    status: 'pending',
+                    created_at: new Date().toISOString().replace('T', ' ').substring(0, 19)
+                };
+                masterBookings.unshift(newBookingRecord);
+                setMasterData('bookings', masterBookings);
+            } catch (err) {}
 
             // Save to backend API (if running on PHP server)
             fetch('api/booking.php', {
@@ -335,8 +357,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(() => {});
 
             // Direct instant email dispatch to hsn96srhan@gmail.com (Guaranteed on GitHub Pages & static hosting)
-            const serviceSelect = document.getElementById('booking_service_select');
-            const selectedService = serviceSelect ? serviceSelect.value : 'استشارة استراتيجية';
 
             fetch('https://formsubmit.co/ajax/hsn96srhan@gmail.com', {
                 method: 'POST',

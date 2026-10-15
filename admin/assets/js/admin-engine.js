@@ -54,6 +54,7 @@ function initAdminPageRenderers() {
 /* 1. Dashboard Overview */
 function renderDashboardOverview() {
     const orders = getMasterData('bank_orders') || [];
+    const bookings = getMasterData('bookings') || [];
     const projects = getMasterData('projects') || [];
     const quals = getMasterData('qualifications') || [];
     const shorts = getMasterData('youtube_shorts') || [];
@@ -61,6 +62,9 @@ function renderDashboardOverview() {
     const pendingCount = orders.filter(o => o.status === 'pending').length;
 
     // Update KPI numbers if elements exist
+    const kpiBookingEl = document.querySelector('#stat_bookings');
+    if (kpiBookingEl) kpiBookingEl.textContent = bookings.length;
+
     const kpiOrderEl = document.querySelector('#stat_pending_orders');
     if (kpiOrderEl) kpiOrderEl.textContent = pendingCount;
 
@@ -481,15 +485,27 @@ function renderContactSettingsControl() {
                 <td><strong>${escapeHtml(b.booking_date)}</strong> <span style="font-size:0.75rem; color:var(--admin-primary);">${escapeHtml(b.time_slot || '')}</span></td>
                 <td>${escapeHtml(b.notes || 'لا يوجد')}</td>
                 <td>
-                    <select class="form-select" style="padding:4px 8px; font-size:0.8rem;" onchange="updateBookingStatus(${b.id}, this.value)">
-                        <option value="pending" ${b.status === 'pending' ? 'selected' : ''}>⏳ قيد الانتظار</option>
-                        <option value="confirmed" ${b.status === 'confirmed' ? 'selected' : ''}>✅ تم التأكيد والمقابلة</option>
-                        <option value="cancelled" ${b.status === 'cancelled' ? 'selected' : ''}>❌ ملغي</option>
-                    </select>
+                    <div style="display:flex; gap:6px; align-items:center;">
+                        <select class="form-select" style="padding:4px 8px; font-size:0.8rem;" onchange="updateBookingStatus(${b.id}, this.value)">
+                            <option value="pending" ${b.status === 'pending' ? 'selected' : ''}>⏳ قيد الانتظار</option>
+                            <option value="confirmed" ${b.status === 'confirmed' ? 'selected' : ''}>✅ تم التأكيد والمقابلة</option>
+                            <option value="cancelled" ${b.status === 'cancelled' ? 'selected' : ''}>❌ ملغي</option>
+                        </select>
+                        <button class="btn-danger-action" style="padding:4px 8px; font-size:0.8rem;" onclick="deleteBookingItem(${b.id})" title="حذف الحجز">🗑️</button>
+                    </div>
                 </td>
             </tr>
         `).join('') || '<tr><td colspan="7" style="text-align:center; padding:2rem; color:var(--admin-text-muted);">لا توجد طلبات استشارات محجوزة بعد.</td></tr>';
     }
+}
+
+function deleteBookingItem(id) {
+    if (!confirm('هل أنت متأكد من حذف هذا الحجز؟')) return;
+    let bookings = getMasterData('bookings') || [];
+    bookings = bookings.filter(b => b.id !== id);
+    setMasterData('bookings', bookings);
+    renderContactSettingsControl();
+    alert('تم حذف الحجز بنجاح.');
 }
 
 /* 10. Sub-Users & Assistants Control */

@@ -978,7 +978,7 @@ const DEFAULT_SITE_DATA = {
 // Data Helper Functions for JS engine
 function getMasterData(key) {
     try {
-        const stored = localStorage.getItem(HSN_MASTER_DATA_ + key);
+        const stored = localStorage.getItem("HSN_MASTER_DATA_" + key);
         if (stored) {
             return JSON.parse(stored);
         }
@@ -988,7 +988,7 @@ function getMasterData(key) {
 
 function setMasterData(key, data) {
     try {
-        localStorage.setItem(HSN_MASTER_DATA_ + key, JSON.stringify(data));
+        localStorage.setItem("HSN_MASTER_DATA_" + key, JSON.stringify(data));
     } catch (e) {}
 }
 
