@@ -838,7 +838,7 @@ const DEFAULT_SITE_DATA = {
         {
             "id": 1,
             "username": "admin",
-            "email": "hi@hsn.agency",
+            "email": "hsn96srhan@gmail.com",
             "role": "admin",
             "status": "active"
         },

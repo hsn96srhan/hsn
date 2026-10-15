@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `users` (`id`, `username`, `email`, `password_hash`, `role`) VALUES
-(1, 'admin', 'hi@hsn.agency', '$2y$10$wN1g4l9aP5b4/o8fO7qS5.X1w64D9T0l4V0X0Z0Y0W0X0Z0Y0W0X0', 'admin'),
+(1, 'admin', 'hsn96srhan@gmail.com', '$2y$10$wN1g4l9aP5b4/o8fO7qS5.X1w64D9T0l4V0X0Z0Y0W0X0Z0Y0W0X0', 'admin'),
 (2, 'seouser', 'seo@hsn.agency', '$2y$10$wN1g4l9aP5b4/o8fO7qS5.X1w64D9T0l4V0X0Z0Y0W0X0Z0Y0W0X0', 'seo')
 ON DUPLICATE KEY UPDATE `id`=`id`;
 

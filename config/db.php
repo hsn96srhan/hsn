@@ -312,7 +312,7 @@ function initializeSQLiteTables($pdo) {
         $adminPass = password_hash('admin123', PASSWORD_DEFAULT);
         $seoPass = password_hash('seo123', PASSWORD_DEFAULT);
         $pdo->exec("INSERT INTO users (username, email, password_hash, role, status) VALUES 
-            ('admin', 'hi@hsn.agency', '$adminPass', 'admin', 'active'),
+            ('admin', 'hsn96srhan@gmail.com', '$adminPass', 'admin', 'active'),
             ('seouser', 'seo@hsn.agency', '$seoPass', 'seo', 'active')
         ");
     }

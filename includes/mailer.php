@@ -7,7 +7,7 @@
  */
 
 if (!defined('ADMIN_EMAIL')) {
-    define('ADMIN_EMAIL', 'hi@hsn.agency');
+    define('ADMIN_EMAIL', 'hsn96srhan@gmail.com');
 }
 
 /**
@@ -62,8 +62,8 @@ function sendDualNotificationMail($type, $data) {
 
     $headersClient = "MIME-Version: 1.0" . "\r\n";
     $headersClient .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headersClient .= "From: Hassan Sarhan <hi@hsn.agency>" . "\r\n";
-    $headersClient .= "Reply-To: hi@hsn.agency" . "\r\n";
+    $headersClient .= "From: Hassan Sarhan <hsn96srhan@gmail.com>" . "\r\n";
+    $headersClient .= "Reply-To: hsn96srhan@gmail.com" . "\r\n";
 
     // Send Mail to Admin
     $mailAdminSuccess = @mail($adminEmail, "=?UTF-8?B?" . base64_encode($subjectAdmin) . "?=", $adminBody, $headers);
