@@ -39,7 +39,7 @@ try {
 <!-- Latest Shorts Videos Section -->
 <section class="shorts-section">
     <div class="container">
-        <div class="shorts-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 1050px; margin: 0 auto;">
+        <div class="shorts-grid" id="homepage_shorts_grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 1050px; margin: 0 auto;">
             <!-- Short 1: Medical Content (130K views) -->
             <div class="short-card" data-video="assets/videos/short_medical.mp4">
                 <video class="short-card-poster" preload="metadata" muted playsinline style="width:100%; height:100%; object-fit:cover;">

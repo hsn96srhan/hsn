@@ -126,8 +126,8 @@ $shorts = $db->query("SELECT * FROM youtube_shorts ORDER BY priority DESC, id DE
         </div>
 
         <div class="form-group">
-            <label class="form-label">رابط فيديو الهيرو (YouTube Embed URL / MP4 Direct Link)</label>
-            <input type="url" name="hero_video_url" class="form-input" value="<?php echo htmlspecialchars($settings['hero_video_url'] ?? ''); ?>" placeholder="https://www.youtube.com/embed/XXXXXX">
+            <label class="form-label">رابط فيديو الهيرو (مسار فيديو MP4 أو رابط YouTube)</label>
+            <input type="text" name="hero_video_url" class="form-input" value="<?php echo htmlspecialchars(!empty($settings['hero_video_url']) && strpos($settings['hero_video_url'], 'dQw4w9WgXcQ') === false ? $settings['hero_video_url'] : 'assets/videos/hero_video.mp4'); ?>" placeholder="assets/videos/hero_video.mp4">
         </div>
     </div>
 

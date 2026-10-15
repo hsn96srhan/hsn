@@ -675,13 +675,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        shortCards.forEach(card => {
-            card.addEventListener('click', () => {
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.short-card');
+            if (card) {
                 const videoSrc = card.getAttribute('data-video') || 'assets/videos/hero_video.mp4';
                 const posterImg = card.querySelector('.short-card-poster');
-                const posterSrc = posterImg ? posterImg.src : '';
+                const posterSrc = posterImg ? (posterImg.src || posterImg.currentSrc || '') : '';
                 openShortModal(videoSrc, posterSrc);
-            });
+            }
         });
 
         if (shortsCloseBtn) shortsCloseBtn.addEventListener('click', closeShortModal);

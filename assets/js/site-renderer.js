@@ -11,20 +11,27 @@ document.addEventListener('DOMContentLoaded', () => {
 function initDynamicFrontendRenderer() {
     const pageName = window.location.pathname.split('/').pop().replace('.html', '').replace('.php', '');
 
-    // ONLY render for explicit dynamic landing pages or dynamic detail pages
-    // Do NOT wipe out static HTML on approved main site pages (qualifications, career, portfolio, services, courses, etc.)
+    // 0. Render Homepage Dynamic Data (Hero Video, Shorts Grid, KPIs, Current Role)
+    if (pageName === 'index' || pageName === '' || document.querySelector('.video-hero-banner')) {
+        renderFrontendHomepage();
+    }
 
-    // 1. Render Dynamic Landing Pages
+    // 1. Render Dynamic Courses
+    if (document.querySelector('#courses_container')) {
+        renderFrontendCourses();
+    }
+
+    // 2. Render Dynamic Landing Pages
     if (pageName === 'lp' || document.querySelector('#lp_sections_dynamic_container[data-dynamic="true"]')) {
         renderFrontendLandingPages();
     }
 
-    // 2. Render Dynamic Blog Details Page
+    // 3. Render Dynamic Blog Details Page
     if (pageName === 'blog-details' && document.querySelector('#blog_detail_container[data-dynamic="true"]')) {
         renderBlogDetailsPage();
     }
 
-    // 3. Render Emergency Contacts & Global Settings if elements exist
+    // 4. Render Emergency Contacts & Global Settings if elements exist
     renderFrontendGlobalSettings();
 }
 
@@ -72,6 +79,134 @@ function injectCustomScripts() {
                 document.body.appendChild(el.cloneNode(true));
             }
         });
+    }
+}
+
+/* 0. Homepage Dynamic Sync (Hero Video, Shorts Grid, KPIs, Current Role) */
+function renderFrontendHomepage() {
+    const settings = getMasterData('site_settings') || {};
+    const shorts = getMasterData('youtube_shorts') || [];
+    const currentLang = document.documentElement.getAttribute('lang') || 'ar';
+
+    // A. Hero Video Player Sync
+    const heroCard = document.getElementById('video_hero_card');
+    if (heroCard && settings.hero_video_url) {
+        const rawUrl = settings.hero_video_url.trim();
+        const isYouTube = rawUrl.includes('youtube.com') || rawUrl.includes('youtu.be');
+
+        if (isYouTube) {
+            let embedUrl = rawUrl;
+            if (!embedUrl.includes('embed/')) {
+                const vidMatch = rawUrl.match(/(?:v=|\/shorts\/|youtu\.be\/)([^&#?]+)/);
+                const vidId = vidMatch ? vidMatch[1] : 'dQw4w9WgXcQ';
+                embedUrl = `https://www.youtube.com/embed/${vidId}`;
+            }
+            if (!embedUrl.includes('enablejsapi')) {
+                embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3';
+            }
+            const existingIframe = heroCard.querySelector('iframe#youtube_hero_player');
+            if (!existingIframe || !existingIframe.src.includes(embedUrl.split('?')[0])) {
+                heroCard.innerHTML = `
+                    <div class="youtube-hero-wrapper">
+                        <iframe id="youtube_hero_player" 
+                                src="${escapeHtml(embedUrl)}" 
+                                title="Executive Hero Video" 
+                                frameborder="0" 
+                                allow="autoplay; encrypted-media" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-click-overlay" id="video_click_overlay"></div>
+                    <button id="video_play_btn" type="button" class="video-play-icon-btn" aria-label="تشغيل الصوت">
+                        <span class="play-triangle-icon">▶</span>
+                    </button>
+                `;
+            }
+        } else {
+            // Local MP4 or direct video file
+            let videoEl = heroCard.querySelector('video#hero_video_player');
+            if (!videoEl) {
+                heroCard.innerHTML = `
+                    <video id="hero_video_player" autoplay muted loop playsinline preload="auto" style="width:100%; height:100%; object-fit:cover; display:block;">
+                        <source src="${escapeHtml(rawUrl)}" type="video/mp4">
+                    </video>
+                    <div class="video-click-overlay" id="video_click_overlay"></div>
+                    <button id="video_play_btn" type="button" class="video-play-icon-btn" aria-label="تشغيل الصوت">
+                        <span class="play-triangle-icon">▶</span>
+                    </button>
+                `;
+            } else {
+                const sourceEl = videoEl.querySelector('source');
+                const currentSrc = sourceEl ? sourceEl.getAttribute('src') : videoEl.getAttribute('src');
+                if (currentSrc !== rawUrl) {
+                    if (sourceEl) sourceEl.setAttribute('src', rawUrl);
+                    videoEl.src = rawUrl;
+                    videoEl.load();
+                    videoEl.play().catch(() => {});
+                }
+            }
+        }
+    }
+
+    // B. Shorts Grid Sync
+    const shortsGrid = document.getElementById('homepage_shorts_grid');
+    if (shortsGrid && shorts.length > 0) {
+        const publishedShorts = shorts.filter(s => s.is_published !== false);
+        publishedShorts.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+
+        shortsGrid.innerHTML = publishedShorts.map(s => {
+            const isLocal = s.video_url || s.youtube_video_id.startsWith('short_') || s.youtube_video_id.endsWith('.mp4');
+            const videoPath = s.video_url || (isLocal ? `assets/videos/${s.youtube_video_id}.mp4` : `assets/videos/hero_video.mp4`);
+            const views = s.views_count || '10K+';
+
+            return `
+                <div class="short-card" data-video="${escapeHtml(videoPath)}">
+                    ${isLocal ? `
+                        <video class="short-card-poster" preload="metadata" muted playsinline style="width:100%; height:100%; object-fit:cover;">
+                            <source src="${escapeHtml(videoPath)}#t=0.5" type="video/mp4">
+                        </video>
+                    ` : `
+                        <img src="https://img.youtube.com/vi/${escapeHtml(s.youtube_video_id)}/hqdefault.jpg" alt="${escapeHtml(s.title)}" class="short-card-poster">
+                    `}
+                    <div class="short-card-overlay"></div>
+                    <div class="short-card-header">
+                        <span class="short-badge">⚡ SHORTS</span>
+                        <span class="short-duration">0:50</span>
+                    </div>
+                    <div class="short-play-btn">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                    <div class="short-card-footer">
+                        <h3 class="short-card-title">${escapeHtml(s.title)}</h3>
+                        <div class="short-card-views">
+                            <span>👁️ ${escapeHtml(views)}</span>
+                            <span>• مشاهدة</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // C. KPIs Sync
+    const kpiElements = document.querySelectorAll('.kpis-bar .kpi-number');
+    if (kpiElements.length >= 4) {
+        if (settings.kpi_exp) kpiElements[0].textContent = settings.kpi_exp;
+        if (settings.kpi_brands) kpiElements[1].textContent = settings.kpi_brands;
+        if (settings.kpi_certs) kpiElements[2].textContent = settings.kpi_certs;
+        if (settings.kpi_roas) kpiElements[3].textContent = settings.kpi_roas;
+    }
+
+    // D. Current Role Sync
+    const roleTitleEl = document.querySelector('.company-card h3 span');
+    if (roleTitleEl) {
+        const rTitle = (currentLang === 'en' && settings.current_role_title_en) ? settings.current_role_title_en : settings.current_role_title_ar;
+        if (rTitle) roleTitleEl.textContent = rTitle;
+    }
+    const roleDescEl = document.querySelector('.company-card p');
+    if (roleDescEl) {
+        const rDesc = (currentLang === 'en' && settings.current_role_desc_en) ? settings.current_role_desc_en : settings.current_role_desc_ar;
+        if (rDesc) roleDescEl.textContent = rDesc;
     }
 }
 
@@ -382,23 +517,54 @@ function renderFrontendServices() {
     `).join('');
 }
 
-/* 6. Courses */
+/* 6. Courses (Executive Card Dynamic Sync) */
 function renderFrontendCourses() {
     const crs = getMasterData('courses') || [];
     const container = document.querySelector('#courses_container');
-    if (!container || !crs.length) return;
+    if (!container) return;
 
+    const currentLang = document.documentElement.getAttribute('lang') || 'ar';
     const published = crs.filter(c => c.is_published !== false);
     published.sort((a, b) => (a.sort_order || a.id) - (b.sort_order || b.id));
 
-    container.innerHTML = published.map(c => `
-        <div class="course-card glass-card" style="padding:2rem; background:#FFF; border:1px solid var(--border-color); border-radius:16px; margin-bottom:1.5rem;">
-            <span style="background:rgba(11,19,43,0.06); color:var(--primary-navy); padding:4px 12px; border-radius:12px; font-weight:800; font-size:0.85rem;">${escapeHtml(c.badge_ar || 'برنامج تدريبي')}</span>
-            <h3 style="font-size:1.3rem; font-weight:800; margin:0.6rem 0; color:var(--primary-navy);">${escapeHtml(c.title_ar)}</h3>
-            <p style="font-size:0.95rem; line-height:1.7; color:var(--text-body);">${escapeHtml(c.description_ar || '')}</p>
-            <div style="font-weight:800; color:#10B981; font-size:1.2rem; margin-top:0.8rem;">${escapeHtml(c.price_ar || '')}</div>
-        </div>
-    `).join('');
+    if (!published.length) {
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: #F8FAFC; border: 1px dashed var(--border-color); border-radius: 16px;">
+                <h3 style="color: var(--primary-navy); margin-bottom: 0.5rem;">لا توجد برامج تدريبية معروضة حالياً</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">سيتم الإعلان عن المواعيد والماستر كلاس الجديد قريباً.</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = published.map(c => {
+        const title = (currentLang === 'en' && c.title_en) ? c.title_en : c.title_ar;
+        const badge = (currentLang === 'en' && c.badge_en) ? c.badge_en : (c.badge_ar || '🔥 برنامج قيادي متقدم');
+        const desc = (currentLang === 'en' && c.description_en) ? c.description_en : (c.description_ar || '');
+        const price = (currentLang === 'en' && c.price_en) ? c.price_en : (c.price_ar || '999 ﷼');
+        const origPrice = (currentLang === 'en' && c.original_price_en) ? c.original_price_en : (c.original_price_ar || '');
+        const img = c.image_url || 'assets/images/image45.jpg';
+
+        return `
+            <div class="img-card">
+                <img src="${escapeHtml(img)}" alt="${escapeHtml(title)}" class="img-card-cover zoomable-img">
+                <div class="img-card-body">
+                    ${badge ? `<span class="case-sector-badge" style="margin-bottom:0.8rem; display:inline-block;" data-en="${escapeHtml(c.badge_en || badge)}">${escapeHtml(badge)}</span>` : ''}
+                    <h3 class="card-title" style="margin-bottom:0.6rem;" data-en="${escapeHtml(c.title_en || title)}">${escapeHtml(title)}</h3>
+                    ${desc ? `<p style="font-size:0.92rem; color:var(--text-body); margin-bottom:1rem;" data-en="${escapeHtml(c.description_en || desc)}">${escapeHtml(desc)}</p>` : ''}
+                    
+                    <!-- Pricing Before & After Discount -->
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:1.2rem; background:#F8FAFC; padding:8px 12px; border-radius:10px; border:1px solid #E2E8F0;">
+                        <span style="font-size:1.35rem; font-weight:800; color:#10B981;">${escapeHtml(price)}</span>
+                        ${origPrice ? `<span style="font-size:0.95rem; text-decoration:line-through; color:var(--text-muted);">${escapeHtml(origPrice)}</span>` : ''}
+                        <span style="background:#FEF3C7; color:#B45309; padding:3px 8px; border-radius:12px; font-size:0.78rem; font-weight:800; margin-right:auto;" data-en="🔥 50% OFF">🔥 وفر 50%</span>
+                    </div>
+
+                    <a href="#" class="btn-primary open-digital-modal-btn" data-product="${escapeHtml(title)}" data-price="${escapeHtml(price)}" style="width:100%; justify-content:center;" data-en="Request Enrollment">💳 طلب التسجيل وحجز المقعد</a>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 /* 7. Landing Pages (10 Dynamic Sections Renderer) */

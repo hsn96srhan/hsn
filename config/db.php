@@ -95,7 +95,7 @@ function initializeSQLiteTables($pdo) {
             'حسن سرحان', 'HASSAN SARHAN',
             'قيادة استراتيجيات النمو والتسويق الرقمي لـ +50 علامة تجارية عالمية ومحلية في الخليج وأوروبا وأمريكا.',
             'Leading growth & digital performance for 50+ global & regional brands across GCC, US & Europe.',
-            'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            'assets/videos/hero_video.mp4',
             '+8 سنوات', '+50 براند', '18 شهادة', '+7M SAR',
             '📌 المنصب القيادي الحالي', '📌 Current Executive Role',
             'شركة فلوكس آدز للتسويق', 'FLUX Ads Agency',

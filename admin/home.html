@@ -120,8 +120,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">رابط فيديو تعريف الهيرو (YouTube Embed URL)</label>
-                        <input type="text" id="hero_video_url" class="form-input" placeholder="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                        <label class="form-label">رابط فيديو تعريف الهيرو (مسار فيديو MP4 أو رابط YouTube)</label>
+                        <input type="text" id="hero_video_url" class="form-input" placeholder="assets/videos/hero_video.mp4">
                     </div>
                 </div>
 
@@ -221,8 +221,8 @@
                             <input type="text" id="short_title" class="form-input" required placeholder="استراتيجية مضاعفة العائد">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">معرف فيديو يوتيوب (Video ID) *</label>
-                            <input type="text" id="youtube_video_id" class="form-input" required placeholder="dQw4w9WgXcQ">
+                            <label class="form-label">معرف يوتيوب أو مسار فيديو MP4 *</label>
+                            <input type="text" id="youtube_video_id" class="form-input" required placeholder="short_medical أو dQw4w9WgXcQ أو assets/videos/...">
                         </div>
                         <div class="form-group">
                             <label class="form-label">عدد المشاهدات (مثال: 120K+)</label>
@@ -281,11 +281,14 @@
         function handleAddShort(e) {
             e.preventDefault();
             let shorts = getMasterData('youtube_shorts') || [];
+            const inputVal = document.getElementById('youtube_video_id').value.trim();
+            const isLocal = inputVal.endsWith('.mp4') || inputVal.startsWith('assets/') || inputVal.startsWith('short_');
             const newShort = {
                 id: Date.now(),
-                title: document.getElementById('short_title').value,
-                youtube_video_id: document.getElementById('youtube_video_id').value,
-                views_count: document.getElementById('views_count').value || '50K+',
+                title: document.getElementById('short_title').value.trim(),
+                youtube_video_id: inputVal,
+                video_url: isLocal ? (inputVal.startsWith('assets/') ? inputVal : `assets/videos/${inputVal}${inputVal.endsWith('.mp4') ? '' : '.mp4'}`) : '',
+                views_count: document.getElementById('views_count').value.trim() || '50K+',
                 likes_count: '2.5K',
                 priority: shorts.length + 1,
                 is_published: true
@@ -295,7 +298,7 @@
             setMasterData('youtube_shorts', shorts);
             renderHomeControl();
             document.getElementById('add_short_form').reset();
-            alert('تمت إضافة فيديو الشورتس بنجاح! 🎬');
+            alert('تمت إضافة فيديو الشورتس بنجاح وسيظهر مباشرة في الصفحة الرئيسية! 🎬');
         }
 
         function deleteShortItem(id) {

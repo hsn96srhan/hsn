@@ -109,8 +109,10 @@ function renderHomeControl() {
     setInputValue('hero_name_ar', settings.hero_name_ar);
     setInputValue('hero_name_en', settings.hero_name_en);
     setInputValue('hero_subtitle_ar', settings.hero_subtitle_ar);
-    setInputValue('hero_subtitle_en', settings.hero_subtitle_en);
-    setInputValue('hero_video_url', settings.hero_video_url);
+    const heroVid = (settings.hero_video_url && !settings.hero_video_url.includes('dQw4w9WgXcQ') && !settings.hero_video_url.includes('LXb3EKWsInQ')) 
+        ? settings.hero_video_url 
+        : 'assets/videos/hero_video.mp4';
+    setInputValue('hero_video_url', heroVid);
 
     setInputValue('kpi_exp', settings.kpi_exp);
     setInputValue('kpi_brands', settings.kpi_brands);

@@ -14,7 +14,7 @@ const DEFAULT_SITE_DATA = {
         "hero_name_en": "HASSAN SARHAN",
         "hero_subtitle_ar": "قيادة استراتيجيات النمو والتسويق الرقمي لـ +50 علامة تجارية عالمية ومحلية في الخليج وأوروبا وأمريكا.",
         "hero_subtitle_en": "Leading growth & digital performance for 50+ global & regional brands across GCC, US & Europe.",
-        "hero_video_url": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        "hero_video_url": "assets/videos/hero_video.mp4",
         "kpi_exp": "+8 سنوات",
         "kpi_brands": "+50 براند",
         "kpi_certs": "18 شهادة",
@@ -996,19 +996,36 @@ function setMasterData(key, data) {
 }
 
 function initMasterData() {
-    const DATA_VERSION = "2026.10.15.v103_REAL_HERO_AND_SHORTS";
-    if (localStorage.getItem("HSN_DATA_VERSION") !== DATA_VERSION) {
-        Object.keys(DEFAULT_SITE_DATA).forEach(key => {
+    const DATA_VERSION = "2026.10.15.v104_DYNAMIC_RENDER_SYNC";
+
+    // 1. Ensure all master data keys are initialized if not present
+    Object.keys(DEFAULT_SITE_DATA).forEach(key => {
+        if (!localStorage.getItem("HSN_MASTER_DATA_" + key)) {
             localStorage.setItem("HSN_MASTER_DATA_" + key, JSON.stringify(DEFAULT_SITE_DATA[key]));
-        });
-        localStorage.setItem("HSN_DATA_VERSION", DATA_VERSION);
-    } else {
-        Object.keys(DEFAULT_SITE_DATA).forEach(key => {
-            if (!localStorage.getItem("HSN_MASTER_DATA_" + key)) {
-                localStorage.setItem("HSN_MASTER_DATA_" + key, JSON.stringify(DEFAULT_SITE_DATA[key]));
-            }
-        });
-    }
+        }
+    });
+
+    // 2. Safe Migration for Hero Video URL in site_settings
+    try {
+        const storedSettings = JSON.parse(localStorage.getItem("HSN_MASTER_DATA_site_settings") || "{}");
+        if (!storedSettings.hero_video_url || 
+            storedSettings.hero_video_url === "https://www.youtube.com/embed/dQw4w9WgXcQ" || 
+            storedSettings.hero_video_url.includes("dQw4w9WgXcQ") || 
+            storedSettings.hero_video_url.includes("LXb3EKWsInQ")) {
+            storedSettings.hero_video_url = "assets/videos/hero_video.mp4";
+            localStorage.setItem("HSN_MASTER_DATA_site_settings", JSON.stringify(storedSettings));
+        }
+    } catch (e) {}
+
+    // 3. Safe Migration for Shorts if dummy shorts were stored
+    try {
+        const storedShorts = JSON.parse(localStorage.getItem("HSN_MASTER_DATA_youtube_shorts") || "[]");
+        if (!storedShorts.length || (storedShorts.length === 3 && storedShorts[0].youtube_video_id === "dQw4w9WgXcQ")) {
+            localStorage.setItem("HSN_MASTER_DATA_youtube_shorts", JSON.stringify(DEFAULT_SITE_DATA.youtube_shorts));
+        }
+    } catch (e) {}
+
+    localStorage.setItem("HSN_DATA_VERSION", DATA_VERSION);
 }
 
 // Auto init on script load

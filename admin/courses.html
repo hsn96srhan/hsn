@@ -230,7 +230,7 @@
                 original_price_ar: document.getElementById('original_price_ar').value,
                 description_ar: document.getElementById('description_ar').value,
                 description_en: document.getElementById('description_en').value,
-                image_url: document.getElementById('image_url').value,
+                image_url: document.getElementById('image_url').value || 'assets/images/image45.jpg',
                 sort_order: parseInt(document.getElementById('sort_order').value) || 1,
                 is_published: true
             };
@@ -245,7 +245,7 @@
             setMasterData('courses', crs);
             renderCoursesControl();
             resetCourseForm();
-            alert('تم حفظ الكورس بنجاح بالشبكة.');
+            alert('تم حفظ وتحديث الكورس بنجاح وسيظهر فوراً في صفحة الكورسات بالموقع! 🎓✨');
         }
     </script>
 </body>

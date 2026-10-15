@@ -19,7 +19,7 @@ try {
 
 <section style="padding: 4rem 0; background: #FFFFFF;">
     <div class="container" style="max-width: 1040px;">
-        <div style="display: flex; flex-direction: column; gap: 2rem;">
+        <div id="courses_container" style="display: flex; flex-direction: column; gap: 2rem;">
             <?php foreach ($courses as $c): ?>
                 <?php 
                 $title = (SITE_LANG === 'en' && !empty($c['title_en'])) ? $c['title_en'] : $c['title_ar'];
