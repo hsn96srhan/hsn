@@ -31,7 +31,12 @@ function initDynamicFrontendRenderer() {
         renderBlogDetailsPage();
     }
 
-    // 4. Render Emergency Contacts & Global Settings if elements exist
+    // 4. Render Dynamic Blog Grid on blog.html
+    if (document.querySelector('#articles_grid') || pageName === 'blog') {
+        renderFrontendBlog();
+    }
+
+    // 5. Render Emergency Contacts & Global Settings if elements exist
     renderFrontendGlobalSettings();
 }
 
@@ -929,6 +934,37 @@ function renderFrontendGlobalSettings() {
             el.href = 'https://wa.me/' + settings.emergency_whatsapp.replace(/[^0-9]/g, '');
         });
     }
+}
+
+/* 10. Render Dynamic Blog Listing Cards on blog.html */
+function renderFrontendBlog() {
+    const container = document.getElementById('articles_grid') || document.querySelector('.cards-grid-3');
+    if (!container) return;
+
+    const articles = getMasterData('articles') || [];
+    if (!articles || !articles.length) return;
+
+    const currentLang = document.documentElement.getAttribute('lang') || 'ar';
+
+    container.innerHTML = articles.filter(a => a.is_published !== false).map(a => {
+        const title = (currentLang === 'en' && a.title_en) ? a.title_en : a.title_ar;
+        const badge = (currentLang === 'en' && a.badge_en) ? a.badge_en : (a.badge_ar || '📈 تسويق استراتيجي');
+        const content = (currentLang === 'en' && a.content_en) ? a.content_en : a.content_ar;
+        const image = a.image_url || 'assets/images/image55.jpg';
+        const link = a.linkedin_url || 'https://linkedin.com/in/hsn96srhan';
+
+        return `
+            <div class="img-card" data-article-id="${a.id}">
+                <img src="${escapeHtml(image)}" alt="${escapeHtml(a.title_ar)}" class="img-card-cover" onerror="this.onerror=null;this.src='assets/images/image55.jpg';">
+                <div class="img-card-body">
+                    <span class="case-sector-badge" style="margin-bottom:0.8rem; display:inline-block;" data-en="${escapeHtml(a.badge_en || a.badge_ar || '')}">${escapeHtml(badge)}</span>
+                    <h3 class="card-title" style="margin-bottom:0.6rem;" data-en="${escapeHtml(a.title_en || a.title_ar)}">${escapeHtml(title)}</h3>
+                    <p style="font-size:0.92rem; color:var(--text-body); margin-bottom:1.2rem; line-height: 1.7;" data-en="${escapeHtml(a.content_en || a.content_ar)}">${escapeHtml(content)}</p>
+                    ${link ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener" class="btn-primary" style="padding:8px 16px; font-size:0.85rem;" data-en="🔗 Read on LinkedIn ↗">🔗 قراءة المقال على LinkedIn ↗</a>` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 function escapeHtml(str) {

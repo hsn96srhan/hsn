@@ -825,13 +825,47 @@ const DEFAULT_SITE_DATA = {
     "articles": [
         {
             "id": 1,
-            "priority": 2,
-            "title_ar": "منهجية تحسين معدلات التحويل CRO للمتاجر الإلكترونية في الخليج",
-            "title_en": "E-commerce CRO Strategies in GCC",
+            "priority": 3,
+            "badge_ar": "📈 التجارة الإلكترونية",
+            "badge_en": "📈 E-Commerce Growth",
+            "image_url": "assets/images/image55.jpg",
+            "title_ar": "تحسين معدلات التحويل CRO للمتاجر",
+            "title_en": "CRO Optimization for GCC E-Commerce",
             "slug": "cro-strategies-gcc",
-            "content_ar": "تعد صياغة مسار تحويل مرن من أهم محركات النمو للتجارة الإلكترونية العابرة للحدود في سوق الخليج، في هذا المقال نستعرض تجارب واقعية لرفع معدل التحويل لـ 52%...",
+            "content_ar": "تعد صياغة مسار تحويل مرن من أهم محركات النمو للتجارة الإلكترونية العابرة للحدود في سوق الخليج، في هذا المقال نستعرض تجارب واقعية لرفع معدل التحويل لـ 52% وتحسين تجربة الدفع.",
+            "content_en": "Structuring high-converting checkout funnels across borders to scale average basket value and overall store revenue.",
             "linkedin_url": "https://linkedin.com/in/hsn96srhan",
             "created_at": "2026-09-27",
+            "is_published": true
+        },
+        {
+            "id": 2,
+            "priority": 2,
+            "badge_ar": "🎯 التسويق بالأداء",
+            "badge_en": "🎯 Performance Ads",
+            "image_url": "assets/images/image56.jpg",
+            "title_ar": "خفض تكلفة العميل CPA بالسوق السعودي",
+            "title_en": "Lowering CPA in Saudi Arabia",
+            "slug": "lowering-cpa-saudi",
+            "content_ar": "تحليل علمي لآليات خفض التكلفة مع رفع جودة العميل المحتمل عن طريق دقة استهداف الخوارزميات وتوليد الإعلانات التفاعلية.",
+            "content_en": "Data-driven tactics to lower CPA while boosting lead quality using algorithmic precision and creative ad variation.",
+            "linkedin_url": "https://linkedin.com/in/hsn96srhan",
+            "created_at": "2026-10-02",
+            "is_published": true
+        },
+        {
+            "id": 3,
+            "priority": 1,
+            "badge_ar": "🏛️ الهوية والاستراتيجية",
+            "badge_en": "🏛️ Brand Strategy",
+            "image_url": "assets/images/image60.jpg",
+            "title_ar": "بناء علامة تجارية ذات أثر مستدام",
+            "title_en": "Building Sustainable Brand Authority",
+            "slug": "building-brand-authority",
+            "content_ar": "خطوات استراتيجية لبناء الانطباع الذهني القوي وترسيخ قيم البراند لدى العملاء المستهدفين في المنطقة.",
+            "content_en": "Strategic steps to construct brand positioning and entrench long-term customer loyalty across regional markets.",
+            "linkedin_url": "https://linkedin.com/in/hsn96srhan",
+            "created_at": "2026-10-08",
             "is_published": true
         }
     ],
@@ -996,7 +1030,7 @@ function setMasterData(key, data) {
 }
 
 function initMasterData() {
-    const DATA_VERSION = "2026.10.15.v104_DYNAMIC_RENDER_SYNC";
+    const DATA_VERSION = "2026.10.16.v105_BLOG_SYNC";
 
     // 1. Ensure all master data keys are initialized if not present
     Object.keys(DEFAULT_SITE_DATA).forEach(key => {
@@ -1022,6 +1056,35 @@ function initMasterData() {
         const storedShorts = JSON.parse(localStorage.getItem("HSN_MASTER_DATA_youtube_shorts") || "[]");
         if (!storedShorts.length || (storedShorts.length === 3 && storedShorts[0].youtube_video_id === "dQw4w9WgXcQ")) {
             localStorage.setItem("HSN_MASTER_DATA_youtube_shorts", JSON.stringify(DEFAULT_SITE_DATA.youtube_shorts));
+        }
+    } catch (e) {}
+
+    // 4. Safe Migration for Articles if user has old single-article seed
+    try {
+        const storedArts = JSON.parse(localStorage.getItem("HSN_MASTER_DATA_articles") || "[]");
+        if (!storedArts.length || storedArts.length <= 1) {
+            localStorage.setItem("HSN_MASTER_DATA_articles", JSON.stringify(DEFAULT_SITE_DATA.articles));
+        } else {
+            let updated = false;
+            storedArts.forEach(a => {
+                if (!a.image_url) {
+                    if (a.id === 1 || a.slug === 'cro-strategies-gcc') a.image_url = 'assets/images/image55.jpg';
+                    else if (a.id === 2 || a.slug === 'lowering-cpa-saudi') a.image_url = 'assets/images/image56.jpg';
+                    else if (a.id === 3 || a.slug === 'building-brand-authority') a.image_url = 'assets/images/image60.jpg';
+                    else a.image_url = 'assets/images/image55.jpg';
+                    updated = true;
+                }
+                if (!a.badge_ar) {
+                    if (a.id === 1) { a.badge_ar = '📈 التجارة الإلكترونية'; a.badge_en = '📈 E-Commerce Growth'; }
+                    else if (a.id === 2) { a.badge_ar = '🎯 التسويق بالأداء'; a.badge_en = '🎯 Performance Ads'; }
+                    else if (a.id === 3) { a.badge_ar = '🏛️ الهوية والاستراتيجية'; a.badge_en = '🏛️ Brand Strategy'; }
+                    else { a.badge_ar = '📝 مقال تسويقي'; a.badge_en = '📝 Marketing Article'; }
+                    updated = true;
+                }
+            });
+            if (updated) {
+                localStorage.setItem("HSN_MASTER_DATA_articles", JSON.stringify(storedArts));
+            }
         }
     } catch (e) {}
 

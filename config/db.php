@@ -413,9 +413,11 @@ function initializeSQLiteTables($pdo) {
     }
 
     $stmtArts = $pdo->query("SELECT COUNT(*) FROM articles");
-    if ($stmtArts->fetchColumn() == 0) {
-        $pdo->exec("INSERT INTO articles (title_ar, title_en, slug, content_ar, linkedin_url, og_title, og_description, priority) VALUES 
-        ('منهجية تحسين معدلات التحويل CRO للمتاجر الإلكترونية في الخليج', 'E-commerce CRO Strategies in GCC', 'cro-strategies-gcc', 'تعد صياغة مسار تحويل مرن من أهم محركات النمو للتجارة الإلكترونية العابرة للحدود في سوق الخليج، في هذا المقال نستعرض تجارب واقعية لرفع معدل التحويل لـ 52%...', 'https://linkedin.com/in/hsn96srhan', 'دليل الـ CRO الشامل للمتاجر الخليجية | حسن سرحان', 'استراتيجيات مجربة لرفع معدلات التحويل وتعظيم قيمة الطلب AOV.', 2)
+    if ($stmtArts->fetchColumn() < 3) {
+        $pdo->exec("INSERT OR IGNORE INTO articles (title_ar, title_en, slug, content_ar, content_en, linkedin_url, og_image_url, og_title, og_description, priority) VALUES 
+        ('تحسين معدلات التحويل CRO للمتاجر', 'CRO Optimization for GCC E-Commerce', 'cro-strategies-gcc', 'تعد صياغة مسار تحويل مرن من أهم محركات النمو للتجارة الإلكترونية العابرة للحدود، في هذا المقال نستعرض كيف قمنا برفع معدل التحويل لـ 52%...', 'Structuring high-converting checkout funnels across borders to scale average basket value and overall store revenue.', 'https://linkedin.com/in/hsn96srhan', 'assets/images/image55.jpg', 'تحسين معدلات التحويل CRO للمتاجر | حسن سرحان', 'استراتيجيات مجربة لرفع معدلات التحويل وتعظيم قيمة الطلب AOV.', 3),
+        ('خفض تكلفة العميل CPA بالسوق السعودي', 'Lowering CPA in Saudi Arabia', 'lowering-cpa-saudi', 'تحليل علمي لآليات خفض التكلفة مع رفع جودة العميل المحتمل عن طريق دقة استهداف الخوارزميات وتوليد الإعلانات التفاعلية.', 'Data-driven tactics to lower CPA while boosting lead quality using algorithmic precision and creative ad variation.', 'https://linkedin.com/in/hsn96srhan', 'assets/images/image56.jpg', 'خفض تكلفة العميل CPA بالسوق السعودي | حسن سرحان', 'تكتيكات قائمة على البيانات لخفض تكلفة الاستحواذ بالسوق السعودي.', 2),
+        ('بناء علامة تجارية ذات أثر مستدام', 'Building Sustainable Brand Authority', 'building-brand-authority', 'خطوات استراتيجية لبناء الانطباع الذهني القوي وترسيخ قيم البراند لدى العملاء المستهدفين في المنطقة.', 'Strategic steps to construct brand positioning and entrench long-term customer loyalty across regional markets.', 'https://linkedin.com/in/hsn96srhan', 'assets/images/image60.jpg', 'بناء علامة تجارية ذات أثر مستدام | حسن سرحان', 'خطوات استراتيجية لبناء تموضع ذهني وترسيخ ولاء العملاء.', 1)
         ");
     }
 }

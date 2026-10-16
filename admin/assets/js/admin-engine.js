@@ -533,6 +533,45 @@ function renderUsersControl() {
             </tr>
         `).join('');
     }
+/* 10. Blog Control Engine */
+function renderBlogControl() {
+    const arts = getMasterData('articles') || [];
+    const countEl = document.getElementById('articles_count');
+    if (countEl) countEl.textContent = arts.length;
+
+    const tableBody = document.querySelector('#articles_table tbody');
+    if (tableBody) {
+        if (arts.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:2rem; color:var(--admin-text-muted);">لا توجد مقالات مضافة حالياً.</td></tr>`;
+            return;
+        }
+        tableBody.innerHTML = arts.map(a => `
+            <tr>
+                <td><strong>#${a.id}</strong></td>
+                <td>
+                    <img src="${a.image_url ? fixAdminImgPath(a.image_url) : '../assets/images/image55.jpg'}" alt="" style="width:54px; height:36px; object-fit:cover; border-radius:6px; border:1px solid rgba(255,255,255,0.1);" onerror="this.onerror=null;this.src='../assets/images/image55.jpg';">
+                </td>
+                <td>
+                    <span style="font-size:0.8rem; background:rgba(212,175,55,0.15); color:var(--admin-primary); padding:4px 8px; border-radius:6px; font-weight:700; display:inline-block;">
+                        ${escapeHtml(a.badge_ar || '📈 تسويق')}
+                    </span>
+                </td>
+                <td>
+                    <strong>${escapeHtml(a.title_ar)}</strong>
+                    ${a.title_en ? `<div style="font-size:0.78rem; color:var(--admin-text-muted);">${escapeHtml(a.title_en)}</div>` : ''}
+                </td>
+                <td><code>${escapeHtml(a.slug || '')}</code></td>
+                <td>${a.linkedin_url ? `<a href="${a.linkedin_url}" target="_blank" style="color:#38BDF8; font-size:0.85rem;">عرض في LinkedIn 🔗</a>` : '-'}</td>
+                <td><span style="font-size:0.8rem; color:var(--admin-text-muted);">${a.created_at || 'الآن'}</span></td>
+                <td>
+                    <div style="display:flex; gap:6px;">
+                        <button class="btn-secondary-action" onclick="editArticleItem(${a.id})">تعديل ✏️</button>
+                        <button class="btn-danger-action" onclick="deleteArticleItem(${a.id})">حذف 🗑️</button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
 }
 
 /* Helper Utilities */
