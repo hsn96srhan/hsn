@@ -16,9 +16,13 @@ const DEFAULT_SITE_DATA = {
         "hero_subtitle_en": "Leading growth & digital performance for 50+ global & regional brands across GCC, US & Europe.",
         "hero_video_url": "assets/videos/hero_video.mp4",
         "kpi_exp": "+8 سنوات",
+        "kpi_exp_en": "+8 Years",
         "kpi_brands": "+50 براند",
+        "kpi_brands_en": "+50 Brands",
         "kpi_certs": "18 شهادة",
-        "kpi_roas": "+7M SAR",
+        "kpi_certs_en": "18 Certs",
+        "kpi_roas": "+7M ﷼",
+        "kpi_roas_en": "+7M SAR",
         "current_role_badge_ar": "📌 المنصب القيادي الحالي",
         "current_role_badge_en": "📌 Current Executive Role",
         "current_role_title_ar": "شركة فلوكس آدز للتسويق",
@@ -794,7 +798,9 @@ const DEFAULT_SITE_DATA = {
         {
             "id": 1,
             "priority": 3,
-            "title": "محتوى طبي (قطاع الرعاية الصحية والعيادات)",
+            "title_ar": "محتوى طبي (قطاع الرعاية الصحية والعيادات) 🩺",
+            "title_en": "Medical & Healthcare Marketing 🩺",
+            "title": "محتوى طبي (قطاع الرعاية الصحية والعيادات) 🩺",
             "youtube_video_id": "short_medical",
             "video_url": "assets/videos/short_medical.mp4",
             "views_count": "130K",
@@ -804,7 +810,9 @@ const DEFAULT_SITE_DATA = {
         {
             "id": 2,
             "priority": 2,
-            "title": "كافيهات ومطاعم (استراتيجيات نمو الـ F&B)",
+            "title_ar": "كافيهات ومطاعم (استراتيجيات نمو قطاع الأغذية والمشروبات) ☕🍽️",
+            "title_en": "Cafes & Restaurants (F&B Growth Strategies) ☕🍽️",
+            "title": "كافيهات ومطاعم (استراتيجيات نمو قطاع الأغذية والمشروبات) ☕🍽️",
             "youtube_video_id": "short_cafes",
             "video_url": "assets/videos/short_cafes.mp4",
             "views_count": "48K",
@@ -814,7 +822,9 @@ const DEFAULT_SITE_DATA = {
         {
             "id": 3,
             "priority": 1,
-            "title": "صناعة المحتوى بالذكاء الاصطناعي (AI Creation)",
+            "title_ar": "صناعة المحتوى بالذكاء الاصطناعي والأتمتة 🤖✨",
+            "title_en": "AI Content Creation & Automation 🤖✨",
+            "title": "صناعة المحتوى بالذكاء الاصطناعي والأتمتة 🤖✨",
             "youtube_video_id": "short_ai",
             "video_url": "assets/videos/short_ai.mp4",
             "views_count": "12K",
@@ -829,7 +839,7 @@ const DEFAULT_SITE_DATA = {
             "badge_ar": "📈 التجارة الإلكترونية",
             "badge_en": "📈 E-Commerce Growth",
             "image_url": "assets/images/image55.jpg",
-            "title_ar": "تحسين معدلات التحويل CRO للمتاجر",
+            "title_ar": "تحسين معدلات التحويل للمتاجر الإلكترونية",
             "title_en": "CRO Optimization for GCC E-Commerce",
             "slug": "cro-strategies-gcc",
             "content_ar": "تعد صياغة مسار تحويل مرن من أهم محركات النمو للتجارة الإلكترونية العابرة للحدود في سوق الخليج، في هذا المقال نستعرض تجارب واقعية لرفع معدل التحويل لـ 52% وتحسين تجربة الدفع.",
@@ -844,7 +854,7 @@ const DEFAULT_SITE_DATA = {
             "badge_ar": "🎯 التسويق بالأداء",
             "badge_en": "🎯 Performance Ads",
             "image_url": "assets/images/image56.jpg",
-            "title_ar": "خفض تكلفة العميل CPA بالسوق السعودي",
+            "title_ar": "خفض تكلفة اكتساب العميل بالسوق السعودي",
             "title_en": "Lowering CPA in Saudi Arabia",
             "slug": "lowering-cpa-saudi",
             "content_ar": "تحليل علمي لآليات خفض التكلفة مع رفع جودة العميل المحتمل عن طريق دقة استهداف الخوارزميات وتوليد الإعلانات التفاعلية.",
@@ -1030,7 +1040,7 @@ function setMasterData(key, data) {
 }
 
 function initMasterData() {
-    const DATA_VERSION = "2026.10.16.v105_BLOG_SYNC";
+    const DATA_VERSION = "2026.10.16.v106_100PERCENT_BILINGUAL";
 
     // 1. Ensure all master data keys are initialized if not present
     Object.keys(DEFAULT_SITE_DATA).forEach(key => {
@@ -1039,22 +1049,31 @@ function initMasterData() {
         }
     });
 
-    // 2. Safe Migration for Hero Video URL in site_settings
+    // 2. Safe Migration for Hero Video URL & KPIs in site_settings
     try {
         const storedSettings = JSON.parse(localStorage.getItem("HSN_MASTER_DATA_site_settings") || "{}");
+        let settingsChanged = false;
         if (!storedSettings.hero_video_url || 
             storedSettings.hero_video_url === "https://www.youtube.com/embed/dQw4w9WgXcQ" || 
             storedSettings.hero_video_url.includes("dQw4w9WgXcQ") || 
             storedSettings.hero_video_url.includes("LXb3EKWsInQ")) {
             storedSettings.hero_video_url = "assets/videos/hero_video.mp4";
+            settingsChanged = true;
+        }
+        if (storedSettings.kpi_roas === "+7M SAR") {
+            storedSettings.kpi_roas = "+7M ﷼";
+            storedSettings.kpi_roas_en = "+7M SAR";
+            settingsChanged = true;
+        }
+        if (settingsChanged) {
             localStorage.setItem("HSN_MASTER_DATA_site_settings", JSON.stringify(storedSettings));
         }
     } catch (e) {}
 
-    // 3. Safe Migration for Shorts if dummy shorts were stored
+    // 3. Safe Migration for Shorts (Ensure clean Arabic and English titles)
     try {
         const storedShorts = JSON.parse(localStorage.getItem("HSN_MASTER_DATA_youtube_shorts") || "[]");
-        if (!storedShorts.length || (storedShorts.length === 3 && storedShorts[0].youtube_video_id === "dQw4w9WgXcQ")) {
+        if (!storedShorts.length || !storedShorts[0].title_en || storedShorts[0].title.includes("F&B") || storedShorts[0].youtube_video_id === "dQw4w9WgXcQ") {
             localStorage.setItem("HSN_MASTER_DATA_youtube_shorts", JSON.stringify(DEFAULT_SITE_DATA.youtube_shorts));
         }
     } catch (e) {}

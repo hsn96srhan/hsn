@@ -45,21 +45,21 @@ try {
                     <div class="img-card-body" style="padding:1.4rem;">
                         <?php if (!empty($problem)): ?>
                             <div style="margin-bottom:0.8rem;">
-                                <strong style="font-size:0.85rem; color:var(--primary-navy); display:block; margin-bottom:2px;">📌 التحدي والهدف:</strong>
+                                <strong style="font-size:0.85rem; color:var(--primary-navy); display:block; margin-bottom:2px;" data-en="📌 Challenge & Objective:">📌 التحدي والهدف:</strong>
                                 <p style="font-size:0.88rem; color:var(--text-body); margin:0; line-height:1.6;"><?php echo htmlspecialchars($problem); ?></p>
                             </div>
                         <?php endif; ?>
 
                         <?php if (!empty($strategy)): ?>
                             <div style="margin-bottom:0.8rem;">
-                                <strong style="font-size:0.85rem; color:var(--primary-navy); display:block; margin-bottom:2px;">⚙️ الاستراتيجية والحل:</strong>
+                                <strong style="font-size:0.85rem; color:var(--primary-navy); display:block; margin-bottom:2px;" data-en="⚙️ Strategy & Solution:">⚙️ الاستراتيجية والحل:</strong>
                                 <p style="font-size:0.88rem; color:var(--text-body); margin:0; line-height:1.6;"><?php echo htmlspecialchars($strategy); ?></p>
                             </div>
                         <?php endif; ?>
 
                         <?php if (!empty($results)): ?>
                             <div style="background: rgba(34, 197, 94, 0.08); border: 1px dashed #166534; padding: 8px 12px; border-radius: 8px; margin-top: 0.8rem;">
-                                <strong style="font-size:0.82rem; color:#166534; display:block; margin-bottom:4px;">🚀 النتائج المحققة (KPIs):</strong>
+                                <strong style="font-size:0.82rem; color:#166534; display:block; margin-bottom:4px;" data-en="🚀 Achieved Results (KPIs):">🚀 النتائج المحققة (KPIs):</strong>
                                 <div style="display:flex; gap:10px; flex-wrap:wrap; font-size:0.82rem; font-weight:800; color:#166534;">
                                     <?php foreach ($results as $k => $v): ?>
                                         <span><?php echo htmlspecialchars($k); ?>: <?php echo htmlspecialchars($v); ?></span>

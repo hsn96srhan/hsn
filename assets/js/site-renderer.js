@@ -163,6 +163,9 @@ function renderFrontendHomepage() {
             const isLocal = s.video_url || s.youtube_video_id.startsWith('short_') || s.youtube_video_id.endsWith('.mp4');
             const videoPath = s.video_url || (isLocal ? `assets/videos/${s.youtube_video_id}.mp4` : `assets/videos/hero_video.mp4`);
             const views = s.views_count || '10K+';
+            const sTitle = currentLang === 'en' ? (s.title_en || s.title) : (s.title_ar || s.title);
+            const badgeText = currentLang === 'en' ? '⚡ SHORTS' : '⚡ شورتس';
+            const viewsWord = currentLang === 'en' ? 'views' : 'مشاهدة';
 
             return `
                 <div class="short-card" data-video="${escapeHtml(videoPath)}">
@@ -171,21 +174,21 @@ function renderFrontendHomepage() {
                             <source src="${escapeHtml(videoPath)}#t=0.5" type="video/mp4">
                         </video>
                     ` : `
-                        <img src="https://img.youtube.com/vi/${escapeHtml(s.youtube_video_id)}/hqdefault.jpg" alt="${escapeHtml(s.title)}" class="short-card-poster">
+                        <img src="https://img.youtube.com/vi/${escapeHtml(s.youtube_video_id)}/hqdefault.jpg" alt="${escapeHtml(sTitle)}" class="short-card-poster">
                     `}
                     <div class="short-card-overlay"></div>
                     <div class="short-card-header">
-                        <span class="short-badge">⚡ SHORTS</span>
+                        <span class="short-badge" data-en="⚡ SHORTS">${badgeText}</span>
                         <span class="short-duration">0:50</span>
                     </div>
                     <div class="short-play-btn">
                         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </div>
                     <div class="short-card-footer">
-                        <h3 class="short-card-title">${escapeHtml(s.title)}</h3>
+                        <h3 class="short-card-title" data-en="${escapeHtml(s.title_en || sTitle)}">${escapeHtml(sTitle)}</h3>
                         <div class="short-card-views">
                             <span>👁️ ${escapeHtml(views)}</span>
-                            <span>• مشاهدة</span>
+                            <span data-en="views">• ${viewsWord}</span>
                         </div>
                     </div>
                 </div>
@@ -196,10 +199,10 @@ function renderFrontendHomepage() {
     // C. KPIs Sync
     const kpiElements = document.querySelectorAll('.kpis-bar .kpi-number');
     if (kpiElements.length >= 4) {
-        if (settings.kpi_exp) kpiElements[0].textContent = settings.kpi_exp;
-        if (settings.kpi_brands) kpiElements[1].textContent = settings.kpi_brands;
-        if (settings.kpi_certs) kpiElements[2].textContent = settings.kpi_certs;
-        if (settings.kpi_roas) kpiElements[3].textContent = settings.kpi_roas;
+        if (settings.kpi_exp) kpiElements[0].textContent = currentLang === 'en' ? (settings.kpi_exp_en || '+8 Years') : settings.kpi_exp;
+        if (settings.kpi_brands) kpiElements[1].textContent = currentLang === 'en' ? (settings.kpi_brands_en || '+50 Brands') : settings.kpi_brands;
+        if (settings.kpi_certs) kpiElements[2].textContent = currentLang === 'en' ? (settings.kpi_certs_en || '18 Certs') : settings.kpi_certs;
+        if (settings.kpi_roas) kpiElements[3].textContent = currentLang === 'en' ? (settings.kpi_roas_en || '+7M SAR') : (settings.kpi_roas || '+7M ﷼');
     }
 
     // D. Current Role Sync
@@ -535,8 +538,8 @@ function renderFrontendCourses() {
     if (!published.length) {
         container.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: #F8FAFC; border: 1px dashed var(--border-color); border-radius: 16px;">
-                <h3 style="color: var(--primary-navy); margin-bottom: 0.5rem;">لا توجد برامج تدريبية معروضة حالياً</h3>
-                <p style="color: var(--text-muted); font-size: 0.95rem;">سيتم الإعلان عن المواعيد والماستر كلاس الجديد قريباً.</p>
+                <h3 style="color: var(--primary-navy); margin-bottom: 0.5rem;" data-en="No Active Programs Currently">${currentLang === 'en' ? 'No Active Programs Currently' : 'لا توجد برامج تدريبية معروضة حالياً'}</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem;" data-en="New masterclass schedules will be announced soon.">${currentLang === 'en' ? 'New masterclass schedules will be announced soon.' : 'سيتم الإعلان عن المواعيد والماستر كلاس الجديد قريباً.'}</p>
             </div>
         `;
         return;
@@ -549,6 +552,8 @@ function renderFrontendCourses() {
         const price = (currentLang === 'en' && c.price_en) ? c.price_en : (c.price_ar || '999 ﷼');
         const origPrice = (currentLang === 'en' && c.original_price_en) ? c.original_price_en : (c.original_price_ar || '');
         const img = c.image_url || 'assets/images/image45.jpg';
+        const discountBadge = currentLang === 'en' ? '🔥 50% OFF' : '🔥 وفر 50%';
+        const btnText = currentLang === 'en' ? '💳 Request Enrollment & Book Seat' : '💳 طلب التسجيل وحجز المقعد';
 
         return `
             <div class="img-card">
@@ -562,10 +567,10 @@ function renderFrontendCourses() {
                     <div style="display:flex; align-items:center; gap:8px; margin-bottom:1.2rem; background:#F8FAFC; padding:8px 12px; border-radius:10px; border:1px solid #E2E8F0;">
                         <span style="font-size:1.35rem; font-weight:800; color:#10B981;">${escapeHtml(price)}</span>
                         ${origPrice ? `<span style="font-size:0.95rem; text-decoration:line-through; color:var(--text-muted);">${escapeHtml(origPrice)}</span>` : ''}
-                        <span style="background:#FEF3C7; color:#B45309; padding:3px 8px; border-radius:12px; font-size:0.78rem; font-weight:800; margin-right:auto;" data-en="🔥 50% OFF">🔥 وفر 50%</span>
+                        <span style="background:#FEF3C7; color:#B45309; padding:3px 8px; border-radius:12px; font-size:0.78rem; font-weight:800; margin-right:auto;" data-en="🔥 50% OFF">${discountBadge}</span>
                     </div>
 
-                    <a href="#" class="btn-primary open-digital-modal-btn" data-product="${escapeHtml(title)}" data-price="${escapeHtml(price)}" style="width:100%; justify-content:center;" data-en="Request Enrollment">💳 طلب التسجيل وحجز المقعد</a>
+                    <a href="#" class="btn-primary open-digital-modal-btn" data-product="${escapeHtml(c.title_ar)}" data-product-en="${escapeHtml(c.title_en || c.title_ar)}" data-price="${escapeHtml(c.price_ar || '999 ﷼')}" data-price-en="${escapeHtml(c.price_en || c.price_ar || '999 SAR')}" style="width:100%; justify-content:center;" data-en="💳 Request Enrollment & Book Seat">${btnText}</a>
                 </div>
             </div>
         `;
@@ -953,6 +958,8 @@ function renderFrontendBlog() {
         const image = a.image_url || 'assets/images/image55.jpg';
         const link = a.linkedin_url || 'https://linkedin.com/in/hsn96srhan';
 
+        const btnText = currentLang === 'en' ? '🔗 Read on LinkedIn ↗' : '🔗 قراءة المقال على LinkedIn ↗';
+
         return `
             <div class="img-card" data-article-id="${a.id}">
                 <img src="${escapeHtml(image)}" alt="${escapeHtml(a.title_ar)}" class="img-card-cover" onerror="this.onerror=null;this.src='assets/images/image55.jpg';">
@@ -960,7 +967,7 @@ function renderFrontendBlog() {
                     <span class="case-sector-badge" style="margin-bottom:0.8rem; display:inline-block;" data-en="${escapeHtml(a.badge_en || a.badge_ar || '')}">${escapeHtml(badge)}</span>
                     <h3 class="card-title" style="margin-bottom:0.6rem;" data-en="${escapeHtml(a.title_en || a.title_ar)}">${escapeHtml(title)}</h3>
                     <p style="font-size:0.92rem; color:var(--text-body); margin-bottom:1.2rem; line-height: 1.7;" data-en="${escapeHtml(a.content_en || a.content_ar)}">${escapeHtml(content)}</p>
-                    ${link ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener" class="btn-primary" style="padding:8px 16px; font-size:0.85rem;" data-en="🔗 Read on LinkedIn ↗">🔗 قراءة المقال على LinkedIn ↗</a>` : ''}
+                    ${link ? `<a href="${escapeHtml(link)}" target="_blank" rel="noopener" class="btn-primary" style="padding:8px 16px; font-size:0.85rem;" data-en="🔗 Read on LinkedIn ↗">${btnText}</a>` : ''}
                 </div>
             </div>
         `;

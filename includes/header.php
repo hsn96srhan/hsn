@@ -48,14 +48,14 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
         <!-- Header Nav Links with strict translated dictionary keys -->
         <ul class="nav-links">
-            <li><a href="qualifications.php" class="<?php echo $currentPage == 'qualifications.php' ? 'active' : ''; ?>"><?php echo t('nav_qualifications'); ?></a></li>
-            <li><a href="career.php" class="<?php echo $currentPage == 'career.php' ? 'active' : ''; ?>"><?php echo t('nav_career'); ?></a></li>
-            <li><a href="services.php" class="<?php echo $currentPage == 'services.php' ? 'active' : ''; ?>"><?php echo t('nav_services'); ?></a></li>
+            <li><a href="qualifications.php" class="<?php echo $currentPage == 'qualifications.php' ? 'active' : ''; ?>" data-en="Qualifications"><?php echo t('nav_qualifications'); ?></a></li>
+            <li><a href="career.php" class="<?php echo $currentPage == 'career.php' ? 'active' : ''; ?>" data-en="Career"><?php echo t('nav_career'); ?></a></li>
+            <li><a href="services.php" class="<?php echo $currentPage == 'services.php' ? 'active' : ''; ?>" data-en="Services"><?php echo t('nav_services'); ?></a></li>
             <?php if ($coursesEnabled): ?>
-                <li><a href="courses.php" class="<?php echo $currentPage == 'courses.php' ? 'active' : ''; ?>"><?php echo t('nav_courses'); ?></a></li>
+                <li><a href="courses.php" class="<?php echo $currentPage == 'courses.php' ? 'active' : ''; ?>" data-en="Courses"><?php echo t('nav_courses'); ?></a></li>
             <?php endif; ?>
-            <li><a href="blog.php" class="<?php echo $currentPage == 'blog.php' ? 'active' : ''; ?>"><?php echo t('nav_blog'); ?></a></li>
-            <li><a href="contact.php" class="<?php echo $currentPage == 'contact.php' ? 'active' : ''; ?>"><?php echo t('nav_contact'); ?></a></li>
+            <li><a href="blog.php" class="<?php echo $currentPage == 'blog.php' ? 'active' : ''; ?>" data-en="Articles"><?php echo t('nav_blog'); ?></a></li>
+            <li><a href="contact.php" class="<?php echo $currentPage == 'contact.php' ? 'active' : ''; ?>" data-en="Contact"><?php echo t('nav_contact'); ?></a></li>
         </ul>
 
         <div class="nav-actions">
@@ -63,7 +63,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <a href="?lang=<?php echo $otherLang; ?>" class="btn-lang">
                 <?php echo $otherLangLabel; ?>
             </a>
-            <a href="services.php#book" class="btn-primary btn-header-cta">
+            <a href="services.php#book" class="btn-primary btn-header-cta" data-en="📅 <?php echo (SITE_LANG === 'en') ? 'Online Meeting' : 'Online Meeting'; ?>">
                 📅 <?php echo t('book_free_meeting'); ?>
             </a>
         </div>

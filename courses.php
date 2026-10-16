@@ -47,7 +47,7 @@ try {
                                 <div style="display:flex; align-items:center; gap:8px;">
                                     <span style="font-size: 1.4rem; font-weight: 800; color: #166534;"><?php echo htmlspecialchars($price); ?></span>
                                     <span style="font-size: 0.95rem; text-decoration: line-through; color: var(--text-muted);"><?php echo htmlspecialchars($original_price); ?></span>
-                                    <span style="background: #FEF3C7; color: #B45309; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 800;">🔥 وفر 50%</span>
+                                    <span style="background: #FEF3C7; color: #B45309; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 800;" data-en="🔥 50% OFF">🔥 وفر 50%</span>
                                 </div>
                                 <?php if (!empty($duration)): ?>
                                     <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 700; margin-top:2px;"><?php echo htmlspecialchars($duration); ?></div>
@@ -68,7 +68,7 @@ try {
                         <?php endif; ?>
 
                         <div style="margin-top: 0.6rem;">
-                            <a href="#" class="btn-primary open-digital-modal-btn" data-product="<?php echo htmlspecialchars($title); ?>" data-price="<?php echo htmlspecialchars($price); ?>" style="padding: 10px 22px; font-size: 0.92rem; font-weight: 800; text-decoration: none; display: inline-block;">
+                            <a href="#" class="btn-primary open-digital-modal-btn" data-product="<?php echo htmlspecialchars($c['title_ar']); ?>" data-price="<?php echo htmlspecialchars($c['price_ar']); ?>" data-product-en="<?php echo htmlspecialchars(!empty($c['title_en']) ? $c['title_en'] : $c['title_ar']); ?>" data-price-en="<?php echo htmlspecialchars(!empty($c['price_en']) ? $c['price_en'] : $c['price_ar']); ?>" style="padding: 10px 22px; font-size: 0.92rem; font-weight: 800; text-decoration: none; display: inline-block;" data-en="💳 Request Enrollment & Book Seat">
                                 💳 طلب التسجيل وحجز المقعد
                             </a>
                         </div>
@@ -87,7 +87,7 @@ try {
         <div style="text-align: center; margin-bottom: 1.4rem; padding-bottom: 1rem; border-bottom: 1px solid #E2E8F0;">
             <span style="font-size: 2.2rem; display: block; margin-bottom: 4px;">💳</span>
             <h3 style="font-size: 1.4rem; color: var(--primary-navy); font-weight: 800; margin: 0 0 4px 0;" data-en="Course Enrollment & Bank Transfer Details">طلب التسجيل وبيانات التحويل البنكي</h3>
-            <span style="background: #DCFCE7; color: #166534; font-size: 0.95rem; font-weight: 800; padding: 4px 14px; border-radius: 20px; display: inline-block; border: 1px solid #86EFAC;" id="modal_product_name_text">الكورس المحدد</span>
+            <span style="background: #DCFCE7; color: #166534; font-size: 0.95rem; font-weight: 800; padding: 4px 14px; border-radius: 20px; display: inline-block; border: 1px solid #86EFAC;" id="modal_product_name_text" data-en="Selected Course">الكورس المحدد</span>
         </div>
 
         <form id="digital_order_form">

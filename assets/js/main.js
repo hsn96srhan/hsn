@@ -448,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('[data-en]').forEach(elem => {
                 if (!elem.hasAttribute('data-ar')) {
                     const currentText = (elem.textContent || '').trim();
-                    if (currentText) {
+                    if (/[\u0600-\u06FF]/.test(currentText)) {
                         elem.setAttribute('data-ar', currentText);
                     }
                 }
@@ -462,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('select option[data-en]').forEach(opt => {
                 if (!opt.hasAttribute('data-ar')) {
                     const optText = (opt.textContent || '').trim();
-                    if (optText) {
+                    if (/[\u0600-\u06FF]/.test(optText)) {
                         opt.setAttribute('data-ar', optText);
                     }
                 }
@@ -534,6 +534,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update time slots UI & any active alert text on language switch
         updateSlotsUI();
+
+        // Re-render dynamic modules (Shorts, Courses, Blog, Hero role) in the active language
+        if (typeof initDynamicFrontendRenderer === 'function') {
+            try {
+                initDynamicFrontendRenderer();
+            } catch (err) {}
+        }
     };
 
     // Determine default language: URL param -> localStorage -> Browser Default Language
@@ -1001,8 +1008,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const btn = e.target.closest('.open-digital-modal-btn');
             if (btn) {
                 e.preventDefault();
-                const prod = btn.getAttribute('data-product') || 'منتج رقمي / دورة تدريبية';
-                const price = btn.getAttribute('data-price') || '';
+                const currentLang = document.documentElement.getAttribute('lang') || 'ar';
+                let prod = btn.getAttribute('data-product') || 'منتج رقمي / دورة تدريبية';
+                let price = btn.getAttribute('data-price') || '';
+                if (currentLang === 'en') {
+                    if (btn.getAttribute('data-product-en')) prod = btn.getAttribute('data-product-en');
+                    if (btn.getAttribute('data-price-en')) price = btn.getAttribute('data-price-en');
+                }
                 openDigitalModal(prod, price);
             }
         });

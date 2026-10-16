@@ -35,7 +35,7 @@ try {
 
                         <?php if (!empty($a['linkedin_url'])): ?>
                             <div style="margin-top: 0.8rem;">
-                                <a href="<?php echo htmlspecialchars($a['linkedin_url']); ?>" target="_blank" rel="noopener" class="btn-primary" style="padding: 8px 18px; font-size: 0.85rem; text-decoration: none; display: inline-block;">
+                                <a href="<?php echo htmlspecialchars($a['linkedin_url']); ?>" target="_blank" rel="noopener" class="btn-primary" style="padding: 8px 18px; font-size: 0.85rem; text-decoration: none; display: inline-block;" data-en="🔗 Read Full Post on LinkedIn ↗">
                                     🔗 قراءة المنشور الكامل على LinkedIn ↗
                                 </a>
                             </div>

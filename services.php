@@ -60,7 +60,7 @@ try {
                         <?php endif; ?>
 
                         <div style="margin-top: 1rem;">
-                            <a href="<?php echo htmlspecialchars(!empty($s['cta_link']) ? $s['cta_link'] : 'contact.php'); ?>" class="btn-primary" style="padding: 10px 22px; font-size: 0.92rem; font-weight: 800; text-decoration: none; display: inline-block;">
+                            <a href="<?php echo htmlspecialchars(!empty($s['cta_link']) ? $s['cta_link'] : 'contact.php'); ?>" class="btn-primary" style="padding: 10px 22px; font-size: 0.92rem; font-weight: 800; text-decoration: none; display: inline-block;" data-en="<?php echo htmlspecialchars(!empty($s['cta_text_en']) ? $s['cta_text_en'] : '📅 Book Consultation Session'); ?>">
                                 <?php echo htmlspecialchars(!empty($cta) ? $cta : '📅 احجز جلسة استشارية'); ?>
                             </a>
                         </div>

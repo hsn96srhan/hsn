@@ -590,7 +590,7 @@ $blocks = json_decode($lp['blocks_json'] ?? '[]', true) ?: [];
                         <?php if (isset($blk['steps']) && is_array($blk['steps'])): ?>
                             <?php foreach ($blk['steps'] as $step): ?>
                                 <div class="lp-card">
-                                    <span class="lp-step-num">الخطوة <?php echo htmlspecialchars($step['num'] ?? '01'); ?></span>
+                                    <span class="lp-step-num" data-en="Step <?php echo htmlspecialchars($step['num'] ?? '01'); ?>">الخطوة <?php echo htmlspecialchars($step['num'] ?? '01'); ?></span>
                                     <h3 class="lp-card-title"><?php echo htmlspecialchars($step['title_ar'] ?? ''); ?></h3>
                                     <p class="lp-card-desc"><?php echo htmlspecialchars($step['desc_ar'] ?? ''); ?></p>
                                 </div>

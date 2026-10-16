@@ -104,8 +104,8 @@ $cleanWa = preg_replace('/[^\d]/', '', $waNum);
                         <div class="contact-info-content">
                             <div class="contact-info-icon">💳</div>
                             <div class="contact-info-details">
-                                <div class="contact-info-label" data-en="Digital Business Card:">الكارت الرقمي Digital Card:</div>
-                                <div class="contact-info-value">GetTap Digital Contact</div>
+                                <div class="contact-info-label" data-en="Digital Business Card:">الكارت الرقمي للتواصل الذكي:</div>
+                                <div class="contact-info-value" data-en="GetTap Digital Card">بطاقة GetTap للتواصل الرقمي المباشر</div>
                             </div>
                         </div>
                         <a href="https://link.gettap.co/srhan" target="_blank" rel="noopener" class="contact-card-btn" data-en="Open Card ↗">فتح الكارت ↗</a>
@@ -143,26 +143,26 @@ $cleanWa = preg_replace('/[^\d]/', '', $waNum);
                         <input type="text" name="company_name" class="digital-form-input" placeholder="اسم براندك أو شركتك">
                     </div>
                     <div>
-                        <label style="display: block; font-size: 0.88rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 6px;">التاريخ المفضل</label>
+                        <label style="display: block; font-size: 0.88rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 6px;" data-en="Preferred Date">التاريخ المفضل</label>
                         <input type="date" name="booking_date" class="digital-form-input" value="<?php echo date('Y-m-d'); ?>">
                     </div>
                     <div>
-                        <label style="display: block; font-size: 0.88rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 6px;">الوقت المفضل</label>
+                        <label style="display: block; font-size: 0.88rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 6px;" data-en="Preferred Time">الوقت المفضل</label>
                         <select name="time_slot" class="digital-form-input">
-                            <option value="10:00 AM">10:00 صباحاً</option>
-                            <option value="02:00 PM">02:00 ظهراً</option>
-                            <option value="05:00 PM">05:00 مساءً</option>
-                            <option value="08:00 PM">08:00 مساءً</option>
+                            <option value="10:00 AM" data-en="10:00 AM">10:00 صباحاً</option>
+                            <option value="02:00 PM" data-en="02:00 PM">02:00 ظهراً</option>
+                            <option value="05:00 PM" data-en="05:00 PM">05:00 مساءً</option>
+                            <option value="08:00 PM" data-en="08:00 PM">08:00 مساءً</option>
                         </select>
                     </div>
                 </div>
 
                 <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; font-size: 0.88rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 6px;">ملاحظات أو تفاصيل المشروع</label>
+                    <label style="display: block; font-size: 0.88rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 6px;" data-en="Project Notes or Details">ملاحظات أو تفاصيل المشروع</label>
                     <textarea name="notes" rows="3" class="digital-form-textarea" placeholder="أكتب نبذة مختصرة عن هدفك والاستراتيجية المطلوبة..."></textarea>
                 </div>
 
-                <button type="submit" class="btn-primary" style="padding: 12px 28px; font-size: 1rem; font-weight: 800; background: var(--primary-navy); color: #FFF; border: none; border-radius: 10px; cursor: pointer;">
+                <button type="submit" class="btn-primary" style="padding: 12px 28px; font-size: 1rem; font-weight: 800; background: var(--primary-navy); color: #FFF; border: none; border-radius: 10px; cursor: pointer;" data-en="🚀 <?php echo (SITE_LANG === 'en') ? 'Confirm Booking' : 'Confirm Booking'; ?>">
                     🚀 <?php echo t('form_submit'); ?>
                 </button>
             </form>

@@ -13,7 +13,7 @@ try {
 <!-- Page Title Bar under Header -->
 <div class="page-title-header-bar">
     <div class="container text-center">
-        <h1 class="page-title-heading"><?php echo t('nav_career'); ?></h1>
+        <h1 class="page-title-heading" data-en="Professional Career"><?php echo t('nav_career'); ?></h1>
     </div>
 </div>
 
@@ -62,10 +62,10 @@ try {
 
                 <div class="company-btn-row">
                     <?php if (!empty($c['website_url'])): ?>
-                        <a href="<?php echo htmlspecialchars($c['website_url']); ?>" target="_blank" rel="noopener" class="btn-primary" style="padding:4px 12px; font-size:0.82rem;">🌐 الموقع ↗</a>
+                        <a href="<?php echo htmlspecialchars($c['website_url']); ?>" target="_blank" rel="noopener" class="btn-primary" style="padding:4px 12px; font-size:0.82rem;" data-en="🌐 Website ↗">🌐 الموقع ↗</a>
                     <?php endif; ?>
                     <?php if (!empty($c['case_study_url'])): ?>
-                        <a href="<?php echo htmlspecialchars($c['case_study_url']); ?>" class="btn-secondary" style="background:var(--bg-soft-gray); color:var(--primary-navy) !important; border:1px solid var(--border-color); padding:4px 12px; font-size:0.82rem;">📂 دراسة حالة</a>
+                        <a href="<?php echo htmlspecialchars($c['case_study_url']); ?>" class="btn-secondary" style="background:var(--bg-soft-gray); color:var(--primary-navy) !important; border:1px solid var(--border-color); padding:4px 12px; font-size:0.82rem;" data-en="📂 Case Study">📂 دراسة حالة</a>
                     <?php endif; ?>
                 </div>
             </div>
