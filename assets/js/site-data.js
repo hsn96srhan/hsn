@@ -1040,7 +1040,16 @@ function setMasterData(key, data) {
 }
 
 function initMasterData() {
-    const DATA_VERSION = "2026.10.16.v106_100PERCENT_BILINGUAL";
+    const DATA_VERSION = "2026.10.18.v107_CLEAN_RESTORE";
+
+    // 0. If version changed or cache corrupted, force reset to authentic default site data
+    if (localStorage.getItem("HSN_DATA_VERSION") !== DATA_VERSION) {
+        Object.keys(DEFAULT_SITE_DATA).forEach(key => {
+            localStorage.setItem("HSN_MASTER_DATA_" + key, JSON.stringify(DEFAULT_SITE_DATA[key]));
+        });
+        localStorage.setItem("HSN_DATA_VERSION", DATA_VERSION);
+        return;
+    }
 
     // 1. Ensure all master data keys are initialized if not present
     Object.keys(DEFAULT_SITE_DATA).forEach(key => {

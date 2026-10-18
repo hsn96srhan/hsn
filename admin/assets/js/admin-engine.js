@@ -533,6 +533,8 @@ function renderUsersControl() {
             </tr>
         `).join('');
     }
+}
+
 /* 10. Blog Control Engine */
 function renderBlogControl() {
     const arts = getMasterData('articles') || [];
